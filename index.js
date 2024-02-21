@@ -280,9 +280,19 @@ async function renderGraph(data) {
   const height = 200;
   var min = Math.min(...data.map((g) => g.number));
   var max = Math.max(...data.map((g) => g.number));
-  var length = data.length;
+
+  var data_length = data.length;
+  var simplified_data = [];
+  for (var i = 1; i < data_length; i += 3) {
+    var curr = data[i];
+    var prev = data[i - 1] || curr;
+    var next = data[i + 1] || curr;
+    simplified_data.push((prev + curr + next) / 3);
+  }
+
+  var length = simplified_data.length;
   var points = [];
-  for (var i = 0; i < length; i += 7) {
+  for (var i = 0; i < length; i++) {
     var x = (i / length) * width;
     var y = (1 - data[i].number / (max - min)) * height;
     points.push({ x, y });
@@ -296,9 +306,9 @@ async function renderGraph(data) {
     ctx.strokeStyle = '#000000';
     ctx.fillStyle = '#000000';
     ctx.lineWidth = 5 * s;
-    var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s}`;
+    var path_data = `M${0},${height * s + 50} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s + 50}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
-    console.log(path_data)
+    console.log(path_data);
 
     ctx.beginPath();
     for (var d of path_points) {
