@@ -293,7 +293,7 @@ async function renderGraph(data) {
   }
 
   var min = Math.min(...processed_data);
-  var max = Math.max(...processed_data);
+  var max = Math.max(...processed_data) + 5;
   var length = processed_data.length;
   var points = [];
   for (var i = 0; i < length; i++) {
