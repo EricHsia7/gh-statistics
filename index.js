@@ -300,7 +300,7 @@ async function renderGraph(data) {
 
     ctx.beginPath();
     for (var d of path_points) {
-      ctx.lineTo(e.x, e.y);
+      ctx.lineTo(d.x, d.y);
     }
     ctx.stroke();
     ctx.fill();
