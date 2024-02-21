@@ -4,6 +4,27 @@ const fs = require('fs');
 const path = require('path');
 const { createCanvas, loadImage } = require('canvas');
 
+async function makeDirectory(path) {
+  // Check if the path already exists
+  try {
+    await fs.promises.access(path);
+    // If there is no error, it means the path already exists
+    console.log('Given directory already exists!');
+  } catch (error) {
+    // If there is an error, it means the path does not exist
+    // Try to create the directory
+    try {
+      await fs.promises.mkdir(path, { recursive: true });
+      // If there is no error, log a success message
+      console.log('New directory created successfully!');
+    } catch (error) {
+      // If there is an error, log it
+      console.log(error);
+      process.exit(1);
+    }
+  }
+}
+
 function segmentsToPath(segments, scale) {
   if (segments.length < 1) {
     return '';
@@ -240,10 +261,9 @@ async function getContributionData() {
   });
 
   // Save the result as JSON files
-  const statsDir = './statistics_logs';
-  if (!fs.existsSync(statsDir)) {
-    fs.mkdirSync(statsDir);
-  }
+  const statsDir = './statistics_logs/';
+  var statsDir_instance = await makeDirectory(statsDir)
+  
   const dateString = new Date().toISOString().split('T')[0];
   fs.writeFileSync(path.join(statsDir, `${dateString}.json`), JSON.stringify(result, null, 2));
   fs.writeFileSync(path.join(statsDir, 'latest.json'), JSON.stringify(result, null, 2));
@@ -253,6 +273,9 @@ async function getContributionData() {
 }
 
 async function renderGraph(data) {
+  const imagesDir = './images/';
+  var imagesDir_instance = await makeDirectory(imagesDir)
+
   const width = 350;
   const height = 200;
   var min = Math.min(...data.map((g) => g.number));
@@ -281,7 +304,7 @@ async function renderGraph(data) {
     ctx.stroke();
 
     const fileName = `contribution_graph_${width}x${height}@${s}x`;
-    const outputFilePath = `./images/${fileName}.png`;
+    const outputFilePath = `${imagesDir}${fileName}.png`;
 
     const outputStream = fs.createWriteStream(outputFilePath);
     const pngStream = canvas.createPNGStream();
