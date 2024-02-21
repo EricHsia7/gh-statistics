@@ -294,14 +294,16 @@ async function renderGraph(data) {
     const ctx = canvas.getContext('2d');
 
     ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 3 * s;
+    ctx.lineWidth = 5 * s;
     var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
+
     ctx.beginPath();
-    path_points.forEach(function (e) {
+    for (var d of path_points) {
       ctx.lineTo(e.x, e.y);
-    });
+    }
     ctx.stroke();
+    ctx.fill();
 
     const fileName = `contribution_graph_${width}x${height}@${s}x`;
     const outputFilePath = `${imagesDir}${fileName}.png`;
