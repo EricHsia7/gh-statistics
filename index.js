@@ -261,7 +261,7 @@ async function getContributionData() {
   });
 
   // Save the result as JSON files
-  const statsDir = './statistics_logs/';
+  const statsDir = './dist/statistics_logs/';
   var statsDir_instance = await makeDirectory(statsDir);
 
   const dateString = new Date().toISOString().split('T')[0];
@@ -273,7 +273,7 @@ async function getContributionData() {
 }
 
 async function renderGraph(data) {
-  const imagesDir = './images/';
+  const imagesDir = './dist/images/';
   var imagesDir_instance = await makeDirectory(imagesDir);
 
   const width = 350;
