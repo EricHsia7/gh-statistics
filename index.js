@@ -262,8 +262,8 @@ async function getContributionData() {
 
   // Save the result as JSON files
   const statsDir = './statistics_logs/';
-  var statsDir_instance = await makeDirectory(statsDir)
-  
+  var statsDir_instance = await makeDirectory(statsDir);
+
   const dateString = new Date().toISOString().split('T')[0];
   fs.writeFileSync(path.join(statsDir, `${dateString}.json`), JSON.stringify(result, null, 2));
   fs.writeFileSync(path.join(statsDir, 'latest.json'), JSON.stringify(result, null, 2));
@@ -274,7 +274,7 @@ async function getContributionData() {
 
 async function renderGraph(data) {
   const imagesDir = './images/';
-  var imagesDir_instance = await makeDirectory(imagesDir)
+  var imagesDir_instance = await makeDirectory(imagesDir);
 
   const width = 350;
   const height = 200;
@@ -320,8 +320,6 @@ async function renderGraph(data) {
 async function main() {
   var contributionData = await getContributionData();
   var graph = await renderGraph(contributionData.data);
-  ghpages.publish('./', { add: true, branch: 'release' }, function () {
-    process.exit(0);
-  });
+  process.exit(0);
 }
 main();
