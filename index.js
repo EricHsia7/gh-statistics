@@ -3,6 +3,7 @@ const ghpages = require('gh-pages');
 const fs = require('fs');
 const path = require('path');
 const { createCanvas, loadImage } = require('canvas');
+const username = process.env.GITHUB_ACTOR;
 
 async function makeDirectory(path) {
   // Check if the path already exists
@@ -235,7 +236,6 @@ function pathCommandToCoordinates(str, precision) {
 async function getContributionData() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  const username = 'your-github-username'; // Replace with the actual GitHub username
   await page.goto(`https://github.com/users/${username}/contributions`);
 
   // Evaluate scripts on the document
