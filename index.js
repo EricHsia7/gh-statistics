@@ -253,7 +253,9 @@ async function getContributionData() {
 
       list.push({ id, number, date });
     }
-
+    list = list.sort(function (a, b) {
+      return a.date - b.date;
+    });
     return {
       update_time: new Date().toISOString(),
       data: list
