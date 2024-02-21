@@ -294,6 +294,7 @@ async function renderGraph(data) {
     const ctx = canvas.getContext('2d');
 
     ctx.strokeStyle = '#000000';
+    ctx.fillStyle = '#000000'
     ctx.lineWidth = 5 * s;
     var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
