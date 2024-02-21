@@ -310,7 +310,7 @@ async function renderGraph(data) {
     points.push({ x, y });
   }
 
-  var output_scales = [1, 2, 4, 5];
+  var output_scales = [3, 6, 12, 15];
   for (var s of output_scales) {
     var canvas = createCanvas((width - width_crop) * s, (height - height_crop) * s);
     var ctx = canvas.getContext('2d');
