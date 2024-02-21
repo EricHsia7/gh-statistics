@@ -70,6 +70,147 @@ function simplifyPath(points, tolerance) {
   }
 }
 
+function pathCommandToCoordinates(str, precision) {
+  var points = [];
+  var regex = /((m|M)\s{0,1}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)|(l|L)\s{0,1}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)|(h|H)\s{0,1}([0-9\.\-]*)|(v|V)\s{0,1}([0-9\.\-]*)|(c|C)\s{0,1}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)[\,\s]{1,2}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)[\,\s]{1,2}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)|(s|S)\s{0,1}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)[\,\s]{1,2}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)|(q|Q)\s{0,1}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)[\,\s]{1,2}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)|(t|T)\s{0,1}([0-9\.\-]*)(\s|\,)([0-9\.\-]*)|(Z|z))/gm;
+  var m = regex.exec(str);
+  while ((m = regex.exec(str)) !== null) {
+    // This is necessary to avoid infinite loops with zero-width matches
+    if (m.index === regex.lastIndex) {
+      regex.lastIndex++;
+    }
+    // The result can be accessed through the `m`-variable.
+    m.forEach((match, groupIndex) => {
+      if (match === 'M') {
+        var x = parseFloat(m[groupIndex + 1]);
+        var y = parseFloat(m[groupIndex + 3]);
+        points.push({ x, y });
+      }
+      if (match === 'L') {
+        var x = parseFloat(m[groupIndex + 1]);
+        var y = parseFloat(m[groupIndex + 3]);
+        var p = points[points.length - 1] || { x: null, y: null };
+        var pX = p.x;
+        var pY = p.y;
+        if (pX === null || pY === null) {
+          points.push({ x, y });
+        } else {
+          var distance = Math.sqrt(Math.pow(x - pX, 2) + Math.pow(y - pY, 2));
+          for (var h = 0; h < distance / precision; h++) {
+            var a = pX + (x - pX) * (h / (distance / precision));
+            var b = pY + (y - pY) * (h / (distance / precision));
+            points.push({ x: a, y: b });
+          }
+        }
+      }
+      if (match === 'H') {
+        var x = m[groupIndex + 1];
+        var y = 0;
+        var p = points[points.length - 1] || { x: null, y: null };
+        var pX = p.x;
+        var pY = p.y;
+        if (pX === null || pY === null) {
+          points.push({ x, y });
+        } else {
+          var distance = Math.abs(x - pX);
+          for (var h = 0; h < distance / precision; h++) {
+            var a = pX + (x - pX) * (h / (distance / precision));
+            points.push({ x: a, y: pY });
+          }
+        }
+      }
+      if (match === 'V') {
+        var x = 0;
+        var y = m[groupIndex + 1];
+        var p = points[points.length - 1] || { x: null, y: null };
+        var pX = p.x;
+        var pY = p.y;
+        if (pX === null || pY === null) {
+          points.push({ x, y });
+        } else {
+          var distance = Math.abs(y - pY);
+          for (var h = 0; h < distance / precision; h++) {
+            var a = pY + (y - pY) * (h / (distance / precision));
+            points.push({ x: pX, y: a });
+          }
+        }
+      }
+      if (match === 'C') {
+        var x1 = m[groupIndex + 1];
+        var y1 = m[groupIndex + 3];
+        var x2 = m[groupIndex + 4];
+        var y2 = m[groupIndex + 6];
+        var x = m[groupIndex + 7];
+        var y = m[groupIndex + 9];
+        var p = points[points.length - 1] || { x: null, y: null };
+        var pX = p.x;
+        var pY = p.y;
+        if (pX === null || pY === null) {
+          points.push({ x, y });
+        } else {
+          var distance = Math.sqrt(Math.pow(x - pX, 2) + Math.pow(y - pY, 2));
+          for (var h = 0; h < distance / precision; h++) {
+            var t = Math.min(Math.max(h / (distance / precision), 0), 1);
+            var a = Math.pow(1 - t, 3) * pX + 3 * Math.pow(1 - t, 2) * t * x1 + 3 * (1 - t) * Math.pow(t, 2) * x2 + Math.pow(t, 3) * x;
+            var b = Math.pow(1 - t, 3) * pY + 3 * Math.pow(1 - t, 2) * t * y1 + 3 * (1 - t) * Math.pow(t, 2) * y2 + Math.pow(t, 3) * y;
+
+            points.push({ x: a, y: b });
+          }
+        }
+      }
+      if (match === 'S') {
+        var x2 = m[groupIndex + 1];
+        var y2 = m[groupIndex + 3];
+        var x = m[groupIndex + 4];
+        var y = m[groupIndex + 6];
+        var p = points[points.length - 1] || { x: null, y: null };
+        var pX = p.x;
+        var pY = p.y;
+
+        if (pX === null || pY === null) {
+          points.push({ x, y });
+        } else {
+          var distance = Math.sqrt(Math.pow(x - pX, 2) + Math.pow(y - pY, 2));
+          for (var h = 0; h < distance / precision; h++) {
+            var t = Math.min(Math.max(h / (distance / precision), 0), 1);
+            var a = Math.pow(1 - t, 3) * pX + 3 * Math.pow(1 - t, 2) * t * (2 * pX - x2) + 3 * (1 - t) * Math.pow(t, 2) * x2 + Math.pow(t, 3) * x;
+            var b = Math.pow(1 - t, 3) * pY + 3 * Math.pow(1 - t, 2) * t * (2 * pY - y2) + 3 * (1 - t) * Math.pow(t, 2) * y2 + Math.pow(t, 3) * y;
+            points.push({ x: a, y: b });
+          }
+        }
+      }
+      if (match === 'Q') {
+        var x1 = parseFloat(m[groupIndex + 1]);
+        var y1 = parseFloat(m[groupIndex + 3]);
+        var x = parseFloat(m[groupIndex + 4]);
+        var y = parseFloat(m[groupIndex + 6]);
+        var p = points[points.length - 1] || { x: null, y: null };
+        var pX = p.x;
+        var pY = p.y;
+        if (pX === null || pY === null) {
+          points.push({ x, y });
+        } else {
+          var distance = Math.sqrt(Math.pow(x - pX, 2) + Math.pow(y - pY, 2));
+          for (var h = 0; h < distance / precision; h++) {
+            var t = Math.min(Math.max(h / (distance / precision), 0), 1);
+            var a = Math.pow(1 - t, 2) * pX + 2 * (1 - t) * t * x1 + Math.pow(t, 2) * x;
+            var b = Math.pow(1 - t, 2) * pY + 2 * (1 - t) * t * y1 + Math.pow(t, 2) * y;
+            points.push({ x: a, y: b });
+          }
+        }
+      }
+      if (match === 'T') {
+        var x = m[groupIndex + 1];
+        var y = m[groupIndex + 3];
+      }
+      if (!(match === undefined)) {
+        // console.log(`Found match, group ${groupIndex}: ${match}`);
+      }
+    });
+  }
+  return points;
+}
+
 async function getContributionData() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -129,10 +270,15 @@ async function renderGraph(data) {
     const canvas = createCanvas(width * s, height * s);
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = '#000000';
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 3 * s;
     var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s}`;
-    var p = new Path2D(path_data);
-    ctx.fill(p);
+    var path_points = pathCommandToCoordinates(path_data, 1);
+    ctx.beginPath();
+    path_points.forEach(function (e) {
+      ctx.lineTo(e.x, e.y);
+    });
+    ctx.stroke();
 
     const fileName = `contribution_graph_${width}x${height}@${s}x`;
     const outputFilePath = `./images/${fileName}.png`;
