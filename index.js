@@ -38,7 +38,7 @@ function segmentsToPath(segments, scale) {
     pathCommand += `Q${c.x * scale},${c.y * scale},${(c.x * scale + n.x * scale) / 2},${(c.y * scale + n.y * scale) / 2}`;
   }
   var lastPoint = segments[segments.length - 1];
-  pathCommand += `M${lastPoint.x},${lastPoint.y}`;
+  pathCommand += `M${lastPoint.x * scale},${lastPoint.y * scale}`;
   return pathCommand;
 }
 
