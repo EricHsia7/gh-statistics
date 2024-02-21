@@ -3,6 +3,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 8 * * 0"
+  push:
+    branches:
+      - main
 jobs: 
   convert: # The name of the job
     runs-on: ubuntu-latest # The type of runner to use
