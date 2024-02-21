@@ -245,7 +245,7 @@ async function getContributionData() {
 
     for (const element of elements) {
       const id = element.id;
-      const date = element.getAttribute('data-date');
+      const date = new Date(String(element.getAttribute('data-date'))).getTime();
       const tooltip = document.querySelector(`tool-tip[for="${id}"]`);
       const textContent = tooltip ? tooltip.textContent : '';
       const numberMatch = textContent.match(/^(\d+)/);
