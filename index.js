@@ -290,8 +290,10 @@ async function renderGraph(data) {
   const imagesDir = './dist/images/';
   var imagesDir_instance = await makeDirectory(imagesDir);
 
-  const width = 350;
+  const width = 360;
   const height = 100;
+  const width_crop = 10;
+  const height_crop = 0;
   data = data.map((g) => {
     return g.number + 5;
   });
@@ -310,13 +312,13 @@ async function renderGraph(data) {
 
   var output_scales = [1, 2, 4, 5];
   for (var s of output_scales) {
-    var canvas = createCanvas(width * s, height * s);
+    var canvas = createCanvas((width - width_crop) * s, (height - height_crop) * s);
     var ctx = canvas.getContext('2d');
 
     ctx.strokeStyle = '#56ab5a';
     const lingrad = ctx.createLinearGradient(width * 0.5 * s, 0, width * 0.5 * s, height * s);
     lingrad.addColorStop(0, 'rgba(86, 171, 90, 0.7)');
-    lingrad.addColorStop(0.9, 'rgba(86, 171, 90, 0.12)');
+    lingrad.addColorStop(0.88, 'rgba(86, 171, 90, 0.09)');
     lingrad.addColorStop(1, 'rgba(86, 171, 90, 0)');
     ctx.fillStyle = lingrad;
     ctx.lineWidth = 1 * s;
@@ -332,7 +334,7 @@ async function renderGraph(data) {
     ctx.fill();
     ctx.closePath();
 
-    const fileName = `contribution_graph_${width}x${height}@${s}x`;
+    const fileName = `contribution_graph@${s}x`;
     const outputFilePath = `${imagesDir}${fileName}.png`;
 
     const outputStream = fs.createWriteStream(outputFilePath);
