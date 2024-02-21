@@ -274,6 +274,18 @@ async function getContributionData() {
   return result;
 }
 
+function smoothArray(array) {
+  var array_length = array.length;
+  var result_array = [];
+  for (var i = 1; i < array_length; i += 3) {
+    var curr = array[i];
+    var prev = array[i - 1] || curr;
+    var next = array[i + 1] || curr;
+    result_array.push((prev + curr + next) / 3);
+  }
+  return result_array;
+}
+
 async function renderGraph(data) {
   const imagesDir = './dist/images/';
   var imagesDir_instance = await makeDirectory(imagesDir);
@@ -281,16 +293,10 @@ async function renderGraph(data) {
   const width = 350;
   const height = 200;
   data = data.map((g) => {
-    return Object.assign(g, { number: g.number + 5 });
+    return g.number + 5;
   });
   var data_length = data.length;
-  var processed_data = [];
-  for (var i = 1; i < data_length; i += 3) {
-    var curr = data[i];
-    var prev = data[i - 1] || curr;
-    var next = data[i + 1] || curr;
-    processed_data.push((prev.number + curr.number + next.number) / 3);
-  }
+  var processed_data = smoothArray(smoothArray(data));
 
   var min = Math.min(...processed_data);
   var max = Math.max(...processed_data) + 5;
