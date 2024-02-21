@@ -240,7 +240,7 @@ async function getContributionData() {
 
   // Evaluate scripts on the document
   const result = await page.evaluate(() => {
-    const list = [];
+    var list = [];
     const elements = document.querySelectorAll('td.ContributionCalendar-day');
 
     for (const element of elements) {
