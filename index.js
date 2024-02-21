@@ -278,23 +278,25 @@ async function renderGraph(data) {
 
   const width = 350;
   const height = 200;
-  data = data.map((g) => Object.assign(g, { number: g.number + 25 }));
+  data = data.map((g) => {
+    return Object.assign(g, { number: g.number + 25 });
+  });
   var data_length = data.length;
   var processed_data = [];
   for (var i = 1; i < data_length; i += 3) {
     var curr = data[i];
     var prev = data[i - 1] || curr;
     var next = data[i + 1] || curr;
-    processed_data.push((prev + curr + next) / 3);
+    processed_data.push((prev.number + curr.number + next.number) / 3);
   }
 
-  var min = Math.min(...processed_data.map((g) => g.number));
-  var max = Math.max(...processed_data.map((g) => g.number));
+  var min = Math.min(...processed_data);
+  var max = Math.max(...processed_data);
   var length = processed_data.length;
   var points = [];
   for (var i = 0; i < length; i++) {
     var x = (i / length) * width;
-    var y = (1 - processed_data[i].number / (max - min)) * height;
+    var y = (1 - processed_data[i] / (max - min)) * height;
     points.push({ x, y });
   }
 
