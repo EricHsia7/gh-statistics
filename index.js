@@ -279,7 +279,7 @@ async function renderGraph(data) {
   const width = 350;
   const height = 200;
   data = data.map((g) => {
-    return Object.assign(g, { number: g.number + 25 });
+    return Object.assign(g, { number: g.number + 5 });
   });
   var data_length = data.length;
   var processed_data = [];
@@ -308,7 +308,7 @@ async function renderGraph(data) {
     ctx.strokeStyle = '#000000';
     ctx.fillStyle = '#000000';
     ctx.lineWidth = 5 * s;
-    var path_data = `M${0},${height * s + 50} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s + 50}`;
+    var path_data = `M${0},${height * s + 3} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s + 3}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
     console.log(path_data);
 
