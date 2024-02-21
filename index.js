@@ -290,11 +290,11 @@ async function renderGraph(data) {
 
   var output_scales = [1, 2, 4];
   for (var s of output_scales) {
-    const canvas = createCanvas(width * s, height * s);
-    const ctx = canvas.getContext('2d');
+    var canvas = createCanvas(width * s, height * s);
+    var ctx = canvas.getContext('2d');
 
     ctx.strokeStyle = '#000000';
-    ctx.fillStyle = '#000000'
+    ctx.fillStyle = '#000000';
     ctx.lineWidth = 5 * s;
     var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
@@ -305,6 +305,7 @@ async function renderGraph(data) {
     }
     ctx.stroke();
     ctx.fill();
+    ctx.closePath();
 
     const fileName = `contribution_graph_${width}x${height}@${s}x`;
     const outputFilePath = `${imagesDir}${fileName}.png`;
