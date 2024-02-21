@@ -7,7 +7,7 @@ on:
     branches:
       - main
 jobs: 
-  convert: # The name of the job
+  main: # The name of the job
     runs-on: ubuntu-latest # The type of runner to use
     steps: 
       - name: Check out repository code # The name of the step
