@@ -291,7 +291,7 @@ async function renderGraph(data) {
   var imagesDir_instance = await makeDirectory(imagesDir);
 
   const width = 350;
-  const height = 200;
+  const height = 150;
   data = data.map((g) => {
     return g.number + 5;
   });
@@ -308,15 +308,15 @@ async function renderGraph(data) {
     points.push({ x, y });
   }
 
-  var output_scales = [4, 2, 1];
+  var output_scales = [1, 2, 4, 5];
   for (var s of output_scales) {
     var canvas = createCanvas(width * s, height * s);
     var ctx = canvas.getContext('2d');
 
-    ctx.strokeStyle = '#000000';
-    ctx.fillStyle = '#000000';
-    ctx.lineWidth = 5 * s;
-    var path_data = `M${0},${height * s + 3} ${segmentsToPath(simplifyPath(points, 0.8), s)} L${width * s},${height * s + 3} L${0},${height * s + 3}`;
+    ctx.strokeStyle = '#56ab5a';
+    ctx.fillStyle = '#56ab5a';
+    ctx.lineWidth = 1.5 * s;
+    var path_data = `M${0},${height * s + 10} ${segmentsToPath(simplifyPath(points, 0.8), s)} L${width * s},${height * s + 10} L${0},${height * s + 10}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
     console.log(path_data);
 
