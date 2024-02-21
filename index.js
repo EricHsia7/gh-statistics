@@ -294,7 +294,7 @@ async function renderGraph(data) {
   var points = [];
   for (var i = 0; i < length; i++) {
     var x = (i / length) * width;
-    var y = (1 - data[i].number / (max - min)) * height;
+    var y = (1 - processed_data[i].number / (max - min)) * height;
     points.push({ x, y });
   }
 
