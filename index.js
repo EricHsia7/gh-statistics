@@ -291,7 +291,7 @@ async function renderGraph(data) {
   var imagesDir_instance = await makeDirectory(imagesDir);
 
   const width = 350;
-  const height = 150;
+  const height = 100;
   data = data.map((g) => {
     return g.number + 5;
   });
