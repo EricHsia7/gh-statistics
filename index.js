@@ -316,10 +316,10 @@ async function renderGraph(data) {
     ctx.strokeStyle = '#56ab5a';
     const lingrad = ctx.createLinearGradient(width * 0.5 * s, 0, width * 0.5 * s, height * s);
     lingrad.addColorStop(0, 'rgba(86, 171, 90, 0.7)');
-    lingrad.addColorStop(0.8, 'rgba(0, 0, 0, 0.12)');
-    lingrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    lingrad.addColorStop(0.9, 'rgba(86, 171, 90, 0.12)');
+    lingrad.addColorStop(1, 'rgba(86, 171, 90, 0)');
     ctx.fillStyle = lingrad;
-    ctx.lineWidth = 1.5 * s;
+    ctx.lineWidth = 1 * s;
     var path_data = `M${0},${height * s + 10} ${segmentsToPath(simplifyPath(points, 0.8), s)} L${width * s},${height * s + 10} L${0},${height * s + 10}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
     console.log(path_data);
