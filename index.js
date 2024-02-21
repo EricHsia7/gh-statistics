@@ -296,8 +296,8 @@ async function renderGraph(data) {
     ctx.strokeStyle = '#000000';
     ctx.fillStyle = '#000000';
     ctx.lineWidth = 5 * s;
-    var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s}`;
-    var path_points = pathCommandToCoordinates(path_data, 1 * s);
+    var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 10), s)} M${width * s},${height * s}`;
+    var path_points = pathCommandToCoordinates(path_data, 1);
 
     ctx.beginPath();
     for (var d of path_points) {
