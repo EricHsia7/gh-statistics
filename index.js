@@ -310,7 +310,7 @@ async function renderGraph(data) {
     ctx.strokeStyle = '#000000';
     ctx.fillStyle = '#000000';
     ctx.lineWidth = 5 * s;
-    var path_data = `M${0},${height * s + 3} ${segmentsToPath(simplifyPath(points, 0.8), s)} L${width * s},${height * s + 3}`;
+    var path_data = `M${0},${height * s + 3} ${segmentsToPath(simplifyPath(points, 0.8), s)} L${width * s},${height * s + 3} L${0},${height * s + 3}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
     console.log(path_data);
 
