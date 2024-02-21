@@ -282,13 +282,13 @@ async function renderGraph(data) {
   var max = Math.max(...data.map((g) => g.number));
   var length = data.length;
   var points = [];
-  for (var i = 0; i < length; i++) {
+  for (var i = 0; i < length; i += 7) {
     var x = (i / length) * width;
     var y = (1 - data[i].number / (max - min)) * height;
     points.push({ x, y });
   }
 
-  var output_scales = [1, 2, 4];
+  var output_scales = [4, 2, 1];
   for (var s of output_scales) {
     var canvas = createCanvas(width * s, height * s);
     var ctx = canvas.getContext('2d');
@@ -296,8 +296,9 @@ async function renderGraph(data) {
     ctx.strokeStyle = '#000000';
     ctx.fillStyle = '#000000';
     ctx.lineWidth = 5 * s;
-    var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 10), s)} M${width * s},${height * s}`;
+    var path_data = `M${0},${height * s} ${segmentsToPath(simplifyPath(points, 0.8), s)} M${width * s},${height * s}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
+    console.log(path_data)
 
     ctx.beginPath();
     for (var d of path_points) {
