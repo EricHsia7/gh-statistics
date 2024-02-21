@@ -303,7 +303,7 @@ async function renderGraph(data) {
   var length = processed_data.length;
   var points = [];
   for (var i = 0; i < length; i++) {
-    var x = (i / length) * width;
+    var x = (i / (length - 1)) * width;
     var y = (1 - processed_data[i] / (max - min)) * height;
     points.push({ x, y });
   }
