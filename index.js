@@ -321,7 +321,7 @@ async function renderGraph(data) {
     lingrad.addColorStop(0.88, 'rgba(86, 171, 90, 0.09)');
     lingrad.addColorStop(1, 'rgba(86, 171, 90, 0)');
     ctx.fillStyle = lingrad;
-    ctx.lineWidth = 1 * s - 1 / s;
+    ctx.lineWidth = (8 / 9) * s + 1 / s;
     var path_data = `M${0},${height * s + 10} ${segmentsToPath(simplifyPath(points, 0.8), s)} L${width * s},${height * s + 10} L${0},${height * s + 10}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
     console.log(path_data);
