@@ -318,7 +318,7 @@ async function renderGraph(data) {
     ctx.strokeStyle = '#56ab5a';
     const lingrad = ctx.createLinearGradient(width * 0.5 * s, 0, width * 0.5 * s, height * s);
     lingrad.addColorStop(0, 'rgba(86, 171, 90, 0.3)');
-    lingrad.addColorStop(0.88, 'rgba(86, 171, 90, 0.09)');
+    lingrad.addColorStop(0.73, 'rgba(86, 171, 90, 0.09)');
     lingrad.addColorStop(1, 'rgba(86, 171, 90, 0)');
     ctx.fillStyle = lingrad;
     ctx.lineWidth = (8 / 9) * s + 1 / s;
