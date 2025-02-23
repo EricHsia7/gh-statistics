@@ -357,7 +357,7 @@ async function makeRequestToGithubAPI(url) {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${GITHUB_TOKEN}`,
-      'X-GitHub-Api-Version': '2025-2-22'
+      'X-GitHub-Api-Version': '2022-11-28'
     }
   });
   const result = await response.json();
@@ -366,9 +366,9 @@ async function makeRequestToGithubAPI(url) {
 
 async function getStatsJSON() {
   // const thisyear = new Date().getFullYear()
-  const commitsAPI = `https://api.github.com/search/commits?q=author:${username}`; // committer-date:thisyear
-  const pullsAPI = `https://api.github.com/search/issues?q=author:${username}:type:pr`;
-  const issuesAPI = `https://api.github.com/search/issues?q=author:${username}:type:issue`;
+  const commitsAPI = `https://api.github.com/search/commits?q=author:${username}&per_page=1`; // committer-date:thisyear
+  const pullsAPI = `https://api.github.com/search/issues?q=author:${username}:type:pr&per_page=1`;
+  const issuesAPI = `https://api.github.com/search/issues?q=author:${username}:type:issue&per_page=1`;
 
   const commits = await makeRequestToGithubAPI(commitsAPI);
   const pulls = await makeRequestToGithubAPI(pullsAPI);
