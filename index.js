@@ -541,7 +541,7 @@ async function getRepositiry(name, languageColorsData) {
       color: languageColorsData[key].color
     });
   }
-  languages.sort(function (a, b) {
+  languagesWithColor.sort(function (a, b) {
     return b.value - a.value;
   });
 
