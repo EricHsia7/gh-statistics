@@ -436,7 +436,7 @@ async function getOpenGraphImage(url) {
     };
   });
   await browser.close();
-  const name = `./${btoa(encodeURIComponent(result.url)).replace(/[\/\+\-\=\.\:]*/gim, '_')}.png`;
+  const name = `./${btoa(encodeURIComponent(result.url)).replace(/[\/\+\-\=\.\:]*/gim, '')}.png`;
   await downloadImage(result.url, name);
   const dimensions = sizeOf(name);
   return {
