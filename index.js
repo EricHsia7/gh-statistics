@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { createCanvas, loadImage } = require('canvas');
 const username = process.env.GITHUB_ACTOR;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 async function makeDirectory(path) {
   // Check if the path already exists
@@ -235,8 +236,8 @@ function pathCommandToCoordinates(str, precision) {
 
 async function getContributionData() {
   const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
   await page.goto(`https://github.com/users/${username}/contributions`);
 
@@ -290,7 +291,7 @@ function smoothArray(array) {
 
 async function renderGraph(data) {
   const imagesDir = './dist/images/';
-  var imagesDir_instance = await makeDirectory(imagesDir);
+  await makeDirectory(imagesDir);
 
   const width = 360;
   const height = 100;
@@ -299,23 +300,23 @@ async function renderGraph(data) {
   data = data.map((g) => {
     return g.number + 5;
   });
-  var data_length = data.length;
-  var processed_data = smoothArray(smoothArray(data));
+  const data_length = data.length;
+  const processed_data = smoothArray(smoothArray(data));
 
-  var min = Math.min(...processed_data);
-  var max = Math.max(...processed_data) + 5;
-  var length = processed_data.length;
-  var points = [];
-  for (var i = 0; i < length; i++) {
-    var x = (i / (length - 1)) * width;
-    var y = (1 - processed_data[i] / (max - min)) * height;
+  const min = Math.min(...processed_data);
+  const max = Math.max(...processed_data) + 5;
+  const length = processed_data.length;
+  let points = [];
+  for (let i = 0; i < length; i++) {
+    const x = (i / (length - 1)) * width;
+    const y = (1 - processed_data[i] / (max - min)) * height;
     points.push({ x, y });
   }
 
-  var output_scales = [3, 6, 12, 15];
-  for (var s of output_scales) {
-    var canvas = createCanvas((width - width_crop) * s, (height - height_crop) * s);
-    var ctx = canvas.getContext('2d');
+  const output_scales = [3, 6, 12, 15];
+  for (const s of output_scales) {
+    const canvas = createCanvas((width - width_crop) * s, (height - height_crop) * s);
+    const ctx = canvas.getContext('2d');
 
     ctx.strokeStyle = '#56ab5a';
     const lingrad = ctx.createLinearGradient(width * 0.5 * s, 0, width * 0.5 * s, height * s);
@@ -329,7 +330,7 @@ async function renderGraph(data) {
     console.log(path_data);
 
     ctx.beginPath();
-    for (var d of path_points) {
+    for (const d of path_points) {
       ctx.lineTo(d.x, d.y);
     }
     ctx.stroke();
@@ -350,9 +351,60 @@ async function renderGraph(data) {
     });
   }
 }
+
+async function makeRequestToGithubAPI(url) {
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${GITHUB_TOKEN}`,
+      'X-GitHub-Api-Version': '2025-2-22'
+    }
+  });
+  const result = await response.json();
+  return result;
+}
+
+async function getStatsJSON() {
+  // const thisyear = new Date().getFullYear()
+  const commitsAPI = `https://api.github.com/search/commits?q=author:${username}`; // committer-date:thisyear
+  const pullsAPI = `https://api.github.com/search/issues?q=author:${username}:type:pr`;
+  const issuesAPI = `https://api.github.com/search/issues?q=author:${username}:type:issue`;
+
+  const commits = await makeRequestToGithubAPI(commitsAPI);
+  const pulls = await makeRequestToGithubAPI(pullsAPI);
+  const issues = await makeRequestToGithubAPI(issuesAPI);
+
+  const commits_count = commits.total_count;
+  const pulls_count = pulls.total_count;
+  const issues_count = issues.total_count;
+
+  const now = new Date();
+  const updateTime = `${[now.getFullYear(), now.getMonth() + 1, now.getDate()].map((e) => String(e).padStart(2, '0').join('-'))} ${[now.getHours(), now.getMinutes(), now.getSeconds()].map((e) => String(e).padStart(2, '0').join(':'))}`;
+
+  const json = {
+    commit: commits_count,
+    pull: pulls_count,
+    issues: issues_count,
+    update_time: updateTime
+  };
+  return JSON.stringify(json, null, 2);
+}
+
+async function createTextFile(filePath, data, encoding = 'utf-8') {
+  try {
+    await fs.promises.writeFile(filePath, data, { encoding });
+    return `Text file '${filePath}' has been created successfully with ${encoding} encoding!`;
+  } catch (err) {
+    throw new Error(`Error writing to file: ${err}`);
+  }
+}
+
 async function main() {
-  var contributionData = await getContributionData();
-  var graph = await renderGraph(contributionData.data);
+  const contributionData = await getContributionData();
+  await renderGraph(contributionData.data);
+  const statsJSON = await getStatsJSON();
+  await createTextFile('./dist/stats.json', statsJSON);
   process.exit(0);
 }
+
 main();
