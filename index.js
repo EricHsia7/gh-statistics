@@ -379,7 +379,7 @@ async function getStatsJSON() {
   const issues_count = issues.total_count;
 
   const now = new Date();
-  const updateTime = `${[now.getFullYear(), now.getMonth() + 1, now.getDate()].map((e) => String(e).padStart(2, '0').join('-'))} ${[now.getHours(), now.getMinutes(), now.getSeconds()].map((e) => String(e).padStart(2, '0').join(':'))}`;
+  const updateTime = `${[now.getFullYear(), now.getMonth() + 1, now.getDate()].map((e) => String(e).padStart(2, '0')).join('-')} ${[now.getHours(), now.getMinutes(), now.getSeconds()].map((e) => String(e).padStart(2, '0')).join(':')}`;
 
   const json = {
     commit: commits_count,
