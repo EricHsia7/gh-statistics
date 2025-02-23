@@ -361,6 +361,7 @@ async function makeRequestToGithubAPI(url) {
     }
   });
   const result = await response.json();
+  console.log(typeof result, result, JSON.stringify(result), String(result));
   return result;
 }
 
@@ -371,8 +372,11 @@ async function getStatsJSON() {
   const issuesAPI = `https://api.github.com/search/issues?q=author:${username}:type:issue&per_page=1`;
 
   const commits = await makeRequestToGithubAPI(commitsAPI);
+  console.log(typeof commits, commits, JSON.stringify(commits), String(commits));
   const pulls = await makeRequestToGithubAPI(pullsAPI);
+  console.log(typeof pulls, pulls, JSON.stringify(pulls), String(pulls));
   const issues = await makeRequestToGithubAPI(issuesAPI);
+  console.log(typeof issues, issues, JSON.stringify(issues), String(issues));
 
   const commits_count = commits.total_count;
   const pulls_count = pulls.total_count;
@@ -387,6 +391,7 @@ async function getStatsJSON() {
     issues: issues_count,
     update_time: updateTime
   };
+  console.log(json);
   return JSON.stringify(json, null, 2);
 }
 
