@@ -368,8 +368,8 @@ async function makeRequestToGithubAPI(url) {
 async function getStatsJSON() {
   // const thisyear = new Date().getFullYear()
   const commitsAPI = `https://api.github.com/search/commits?q=author:${username}&per_page=1`; // committer-date:thisyear
-  const pullsAPI = `https://api.github.com/search/issues?q=author:${username}:type:pr&per_page=1`;
-  const issuesAPI = `https://api.github.com/search/issues?q=author:${username}:type:issue&per_page=1`;
+  const pullsAPI = `https://api.github.com/search/issues?q=author:${username}&type:pr&per_page=1`;
+  const issuesAPI = `https://api.github.com/search/issues?q=author:${username}&type:issue&per_page=1`;
 
   const commits = await makeRequestToGithubAPI(commitsAPI);
   console.log(typeof commits, commits, JSON.stringify(commits), String(commits));
