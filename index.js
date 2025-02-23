@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const ghpages = require('gh-pages');
 const fs = require('fs');
 const path = require('path');
 const { createCanvas, loadImage } = require('canvas');
@@ -300,7 +299,6 @@ async function renderGraph(data) {
   data = data.map((g) => {
     return g.number + 5;
   });
-  const data_length = data.length;
   const processed_data = smoothArray(smoothArray(data));
 
   const min = Math.min(...processed_data);
@@ -327,7 +325,6 @@ async function renderGraph(data) {
     ctx.lineWidth = (8 / 9) * s + 1 / s;
     var path_data = `M${0},${height * s + 10} ${segmentsToPath(simplifyPath(points, 0.8), s)} L${width * s},${height * s + 10} L${0},${height * s + 10}`;
     var path_points = pathCommandToCoordinates(path_data, 1);
-    console.log(path_data);
 
     ctx.beginPath();
     for (const d of path_points) {
@@ -412,20 +409,37 @@ async function getOpenGraphImage(url) {
   // Evaluate scripts on the document
   const result = await page.evaluate(() => {
     const elements = document.querySelectorAll('meta[property="og:image"]');
-    let link = '';
+    let url = '';
     for (const element of elements) {
       const content = element.getAttribute('content');
       if (/https:\/\/repository-images\.githubusercontent\.com\/[0-9]*\/[a-f0-9-]*/im.test(content)) {
-        link = content;
+        url = content;
         break;
       }
     }
     return {
-      link: link
+      url: url
     };
   });
   await browser.close();
-  return result.link;
+  const size = await new Promise((resolve, reject) => {
+    try {
+      const img = new Image();
+      img.onload = function () {
+        resolve({
+          width: parseInt(img.width),
+          height: parseInt(img.height)
+        });
+      };
+      img.src = result.url;
+    } catch (error) {
+      reject(error);
+    }
+  });
+  return {
+    url: result.url,
+    size: size
+  };
 }
 
 function getRecentEvents(events) {
