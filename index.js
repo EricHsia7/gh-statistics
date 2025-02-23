@@ -428,7 +428,7 @@ async function getOpenGraphImage(url) {
   return result.link;
 }
 
-async function getRecentEvents(events) {
+function getRecentEvents(events) {
   const result = [];
   let quantity = 0;
   for (const event of events) {
@@ -538,9 +538,12 @@ async function getRepositiry(name, languageColorsData) {
     languagesWithColor.push({
       lang: key,
       value: value,
-      color: languageColorsData[key]
+      color: languageColorsData[key].color
     });
   }
+  languages.sort(function (a, b) {
+    return b.value - a.value;
+  });
 
   const result = {
     full_name,
@@ -550,15 +553,15 @@ async function getRepositiry(name, languageColorsData) {
     created_at,
     updated_at,
     active,
-    recentEvents,
-    ogImage: openGraphImage,
+    recent_events: recentEvents,
+    open_graph_image: openGraphImage,
     languages: languagesWithColor
   };
 
   return result;
 }
 
-async function getProjects() {
+async function getRepositories() {
   const list = ['EricHsia7/bus', 'EricHsia7/pwdgen2'];
   const languageColorsData = await getLanguageColorsData();
 
@@ -587,8 +590,8 @@ async function main() {
   await renderGraph(contributionData.data);
   const statsJSON = await getStatsJSON();
   await createTextFile('./dist/stats.json', statsJSON);
-  const projectsJSON = await getProjects();
-  await createTextFile('./dist/projects.json', projectsJSON);
+  const repositoriesJSON = await getRepositories();
+  await createTextFile('./dist/repositories.json', repositoriesJSON);
   process.exit(0);
 }
 
