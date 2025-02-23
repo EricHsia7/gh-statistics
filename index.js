@@ -588,7 +588,7 @@ async function main() {
   const statsJSON = await getStatsJSON();
   await createTextFile('./dist/stats.json', statsJSON);
   const projectsJSON = await getProjects();
-  await createTextFile('./dist/stats.json', projectsJSON);
+  await createTextFile('./dist/projects.json', projectsJSON);
   process.exit(0);
 }
 
