@@ -86,7 +86,13 @@
           "time": "2025-02-22 13:46:43"
         }
       ],
-      "open_graph_image": "https://repository-images.githubusercontent.com/588424757/1ec7f6c3-e498-49ac-957c-3c3128d7f183",
+      "open_graph_image": {
+        "url": "https://repository-images.githubusercontent.com/588424757/1ec7f6c3-e498-49ac-957c-3c3128d7f183",
+        "size": {
+          "width": 1280,
+          "height": 640
+        }
+      },
       "languages": [
         {
           "lang": "TypeScript",
@@ -119,7 +125,13 @@
       "updated_at": "2024-05-15T15:25:35Z",
       "active": false,
       "recent_events": [],
-      "open_graph_image": "https://repository-images.githubusercontent.com/432675057/e7e6c727-6d62-4404-9707-4171ecc5ebe7",
+      "open_graph_image": {
+        "url": "https://repository-images.githubusercontent.com/432675057/e7e6c727-6d62-4404-9707-4171ecc5ebe7",
+        "size": {
+          "width": 1280,
+          "height": 640
+        }
+      },
       "languages": [
         {
           "lang": "TypeScript",
@@ -149,5 +161,5 @@
       ]
     }
   ],
-  "update_time": "2025-02-23 09:58:55"
+  "update_time": "2025-02-23 15:00:53"
 }
