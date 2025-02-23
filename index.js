@@ -361,8 +361,11 @@ async function makeRequestToGithubAPI(url) {
     }
   });
   const result = await response.json();
-  console.log(typeof result, result, JSON.stringify(result), String(result));
   return result;
+}
+
+function formatDate(date) {
+  return `${[date.getFullYear(), date.getMonth() + 1, date.getDate()].map((e) => String(e).padStart(2, '0')).join('-')} ${[date.getHours(), date.getMinutes(), date.getSeconds()].map((e) => String(e).padStart(2, '0')).join(':')}`;
 }
 
 async function getStatsJSON() {
@@ -372,18 +375,15 @@ async function getStatsJSON() {
   const issuesAPI = `https://api.github.com/search/issues?q=author:${username}&type:issue&per_page=1`;
 
   const commits = await makeRequestToGithubAPI(commitsAPI);
-  console.log(typeof commits, commits, JSON.stringify(commits), String(commits));
   const pulls = await makeRequestToGithubAPI(pullsAPI);
-  console.log(typeof pulls, pulls, JSON.stringify(pulls), String(pulls));
   const issues = await makeRequestToGithubAPI(issuesAPI);
-  console.log(typeof issues, issues, JSON.stringify(issues), String(issues));
 
   const commits_count = commits.total_count;
   const pulls_count = pulls.total_count;
   const issues_count = issues.total_count;
 
   const now = new Date();
-  const updateTime = `${[now.getFullYear(), now.getMonth() + 1, now.getDate()].map((e) => String(e).padStart(2, '0')).join('-')} ${[now.getHours(), now.getMinutes(), now.getSeconds()].map((e) => String(e).padStart(2, '0')).join(':')}`;
+  const updateTime = formatDate(now);
 
   const json = {
     commit: commits_count,
@@ -391,8 +391,186 @@ async function getStatsJSON() {
     issues: issues_count,
     update_time: updateTime
   };
-  console.log(json);
+
   return JSON.stringify(json, null, 2);
+}
+
+async function getLanguageColorsData() {
+  const url = 'https://raw.githubusercontent.com/ozh/github-colors/master/colors.json';
+  const response = await fetch(url);
+  const json = response.json();
+  return json;
+}
+
+async function getOpenGraphImage(url) {
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+  const page = await browser.newPage();
+  await page.goto(url);
+
+  // Evaluate scripts on the document
+  const result = await page.evaluate(() => {
+    const elements = document.querySelectorAll('meta[property="og:image"]');
+    let link = '';
+    for (const element of elements) {
+      const content = element.getAttribute('content');
+      if (/https:\/\/repository-images\.githubusercontent\.com\/[0-9]*\/[a-f0-9-]*/im.test(content)) {
+        link = content;
+        break;
+      }
+    }
+    return {
+      link: link
+    };
+  });
+  await browser.close();
+  return result.link;
+}
+
+async function getRecentEvents(events) {
+  const result = [];
+  let quantity = 0;
+  for (const event of events) {
+    let recentEvent = {};
+    const eventType = event.type;
+    if (eventType === 'PushEvent') {
+      if (!event.hasOwnProperty('payload')) {
+        continue;
+      }
+      if (!event.payload.hasOwnProperty('commits')) {
+        continue;
+      }
+      if (event.payload.commits[0] === undefined) {
+        continue;
+      }
+      if (!event.payload.commits[0].hasOwnProperty('message')) {
+        continue;
+      }
+      recentEvent.title = `Commit - ${event.payload.commits[0].message}`;
+      recentEvent.url = `https://github.com/${event.repo.name}/commit/${event.payload.commits[0].sha}`;
+      const created_at = new Date(event.created_at);
+      recentEvent.time = formatDate(created_at);
+      result.push(recentEvent);
+      quantity += 1;
+    }
+
+    if (eventType === 'PullRequestEvent') {
+      if (!event.hasOwnProperty('payload')) {
+        continue;
+      }
+      recentEvent.title = `PR - ${event.payload.pull_request.title} (${event.payload.pull_request.state})`;
+      recentEvent.url = event.payload.pull_request.html_url;
+      const updated_at = new Date(event.payload.pull_request.updated_at);
+      recentEvent.time = formatDate(updated_at);
+      result.push(recentEvent);
+      quantity += 1;
+    }
+
+    if (quantity >= 3) {
+      break;
+    }
+  }
+
+  return result.slice(0, 3);
+}
+
+function isActive(pushed_at, events) {
+  const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+  const pushed_at_time = new Date(pushed_at).getTime();
+  const now = new Date().getTime();
+  if (now - pushed_at_time > 30 * oneDayInMilliseconds) {
+    // 1 month
+    return false;
+  }
+  if (events.length === 0) {
+    return false;
+  }
+
+  // Extract time differences for PushEvents
+  const timeDifferences = events.filter((event) => event.type === 'PushEvent').map((event) => now - new Date(event.created_at).getTime());
+
+  if (timeDifferences.length === 0) return false;
+
+  // Calculate average
+  const average = timeDifferences.reduce((sum, time) => sum + time, 0) / timeDifferences.length;
+
+  // Calculate standard deviation
+  const squaredDifferences = timeDifferences.map((time) => Math.pow(time - average, 2));
+  const standardDeviation = Math.sqrt(squaredDifferences.reduce((sum, diff) => sum + diff, 0) / timeDifferences.length);
+
+  // Check if within thresholds
+  return average <= 10 * oneDayInMilliseconds && standardDeviation <= 7 * oneDayInMilliseconds;
+}
+
+async function resolveGitHubAPIContent(property, value) {
+  if (String(value).indexOf('https://api.github.com') > -1 && String(property).indexOf('_url') > -1) {
+    const json = await makeRequestToGithubAPI(value);
+    return json;
+  } else {
+    if (value === undefined || value === null) {
+      return '';
+    } else {
+      return value;
+    }
+  }
+}
+
+async function getRepositiry(name, languageColorsData) {
+  const url = `https://api.github.com/repos/${name}`;
+  const repoData = await makeRequestToGithubAPI(url);
+  const full_name = repoData.full_name;
+  const tags = await resolveGitHubAPIContent('tags_url', repoData.tags_url);
+  const description = repoData.description;
+  const htmlURL = repoData.html_url;
+  const pushed_at = repoData.pushed_at;
+  const created_at = repoData.created_at;
+  const updated_at = repoData.updated_at;
+  const events = await resolveGitHubAPIContent('events_url', repoData.events_url);
+  const languages = await resolveGitHubAPIContent('languages_url', repoData.languages_url);
+  const openGraphImage = await getOpenGraphImage(htmlURL);
+  const active = isActive(pushed_at, events);
+  const recentEvents = getRecentEvents(events);
+
+  const languagesWithColor = [];
+  for (const key in languages) {
+    const value = languages[key];
+    languagesWithColor.push({
+      lang: key,
+      value: value,
+      color: languageColorsData[key]
+    });
+  }
+
+  const result = {
+    full_name,
+    tags,
+    description,
+    pushed_at,
+    created_at,
+    updated_at,
+    active,
+    recentEvents,
+    ogImage: openGraphImage,
+    languages: languagesWithColor
+  };
+
+  return result;
+}
+
+async function getProjects() {
+  const list = ['EricHsia7/bus', 'EricHsia7/pwdgen2'];
+  const languageColorsData = await getLanguageColorsData();
+
+  const repos = [];
+  for (const name of list) {
+    const repo = await getRepositiry(name, languageColorsData);
+    repos.push(repo);
+  }
+  const now = new Date();
+  const updateTime = formatDate(now);
+  const result = { repos: repos, update_time: updateTime };
+  return JSON.stringify(result, null, 2);
 }
 
 async function createTextFile(filePath, data, encoding = 'utf-8') {
@@ -409,6 +587,8 @@ async function main() {
   await renderGraph(contributionData.data);
   const statsJSON = await getStatsJSON();
   await createTextFile('./dist/stats.json', statsJSON);
+  const projectsJSON = await getProjects();
+  await createTextFile('./dist/stats.json', projectsJSON);
   process.exit(0);
 }
 
