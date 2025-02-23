@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 const { createCanvas, loadImage } = require('canvas');
+const sizeOf = require('image-size');
 const username = process.env.GITHUB_ACTOR;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
