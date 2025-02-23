@@ -26,6 +26,19 @@ async function makeDirectory(path) {
   }
 }
 
+async function downloadImage(url, filepath) {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch image: ${response.statusText}`);
+  }
+
+  const buffer = await response.arrayBuffer();
+  fs.writeFileSync(filepath, Buffer.from(buffer));
+
+  console.log(`Image saved to ${filepath}`);
+}
+
 function segmentsToPath(segments, scale) {
   if (segments.length < 1) {
     return '';
@@ -422,23 +435,15 @@ async function getOpenGraphImage(url) {
     };
   });
   await browser.close();
-  const size = await new Promise((resolve, reject) => {
-    try {
-      const img = new Image();
-      img.onload = function () {
-        resolve({
-          width: parseInt(img.width),
-          height: parseInt(img.height)
-        });
-      };
-      img.src = result.url;
-    } catch (error) {
-      reject(error);
-    }
-  });
+  const name = `./${btoa(encodeURIComponent(result.url)).replace(/[\/\+\-\=\.\:]*/gim, '_')}.png`;
+  await downloadImage(result.url, name);
+  const dimensions = sizeOf(name);
   return {
     url: result.url,
-    size: size
+    size: {
+      width: dimensions.width,
+      height: dimensions.height
+    }
   };
 }
 
