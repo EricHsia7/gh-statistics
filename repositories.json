@@ -65,25 +65,25 @@
         }
       ],
       "description": "A reader for organized bus information",
-      "pushed_at": "2025-02-22T14:08:26Z",
+      "pushed_at": "2025-03-02T07:29:08Z",
       "created_at": "2023-01-13T04:39:43Z",
-      "updated_at": "2025-02-22T14:07:38Z",
+      "updated_at": "2025-03-02T02:26:18Z",
       "active": true,
       "recent_events": [
         {
-          "title": "Commit - Updates",
-          "url": "https://github.com/EricHsia7/bus/commit/c6ea3e8b34b206e8c8f1d1c8e42beb735d7fae65",
-          "time": "2025-02-22 14:08:27"
+          "title": "Commit - update",
+          "url": "https://github.com/EricHsia7/bus/commit/7dcc7ee8b55531c9fbea8267f63d842c2ae643e3",
+          "time": "2025-03-02 07:29:09"
         },
         {
           "title": "Commit - update",
-          "url": "https://github.com/EricHsia7/bus/commit/c9bbe14e01cc92a0ac109a9e234116088cf4fa69",
-          "time": "2025-02-22 14:07:36"
+          "url": "https://github.com/EricHsia7/bus/commit/8ea007d532a4c9d99499b8265b91e2299e5783aa",
+          "time": "2025-03-02 06:57:08"
         },
         {
           "title": "Commit - Updates",
-          "url": "https://github.com/EricHsia7/bus/commit/928165e28e3699fc38d0ea4c78265e1c17c6ed80",
-          "time": "2025-02-22 13:46:43"
+          "url": "https://github.com/EricHsia7/bus/commit/22a0a1f598543583141544f3e061950cd622aaf2",
+          "time": "2025-03-02 02:27:12"
         }
       ],
       "open_graph_image": {
@@ -96,12 +96,12 @@
       "languages": [
         {
           "lang": "TypeScript",
-          "value": 615978,
+          "value": 617903,
           "color": "#3178c6"
         },
         {
           "lang": "CSS",
-          "value": 321570,
+          "value": 325688,
           "color": "#663399"
         },
         {
@@ -111,7 +111,7 @@
         },
         {
           "lang": "JavaScript",
-          "value": 20154,
+          "value": 20281,
           "color": "#f1e05a"
         }
       ]
@@ -161,5 +161,5 @@
       ]
     }
   ],
-  "update_time": "2025-02-23 15:00:53"
+  "update_time": "2025-03-02 08:22:36"
 }
