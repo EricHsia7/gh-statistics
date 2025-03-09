@@ -4,6 +4,16 @@
       "full_name": "EricHsia7/bus",
       "tags": [
         {
+          "name": "v2.0.5",
+          "zipball_url": "https://api.github.com/repos/EricHsia7/bus/zipball/refs/tags/v2.0.5",
+          "tarball_url": "https://api.github.com/repos/EricHsia7/bus/tarball/refs/tags/v2.0.5",
+          "commit": {
+            "sha": "78fe1e9dc0f39dec562d6b4e3f8da5c067ee64c4",
+            "url": "https://api.github.com/repos/EricHsia7/bus/commits/78fe1e9dc0f39dec562d6b4e3f8da5c067ee64c4"
+          },
+          "node_id": "REF_kwDOIxKmNbByZWZzL3RhZ3MvdjIuMC41"
+        },
+        {
           "name": "v2.0.4",
           "zipball_url": "https://api.github.com/repos/EricHsia7/bus/zipball/refs/tags/v2.0.4",
           "tarball_url": "https://api.github.com/repos/EricHsia7/bus/tarball/refs/tags/v2.0.4",
@@ -65,25 +75,25 @@
         }
       ],
       "description": "A reader for organized bus information",
-      "pushed_at": "2025-03-02T07:29:08Z",
+      "pushed_at": "2025-03-09T02:31:16Z",
       "created_at": "2023-01-13T04:39:43Z",
-      "updated_at": "2025-03-02T02:26:18Z",
+      "updated_at": "2025-03-09T02:30:30Z",
       "active": true,
       "recent_events": [
         {
-          "title": "Commit - update",
-          "url": "https://github.com/EricHsia7/bus/commit/7dcc7ee8b55531c9fbea8267f63d842c2ae643e3",
-          "time": "2025-03-02 07:29:09"
+          "title": "Commit - Updates",
+          "url": "https://github.com/EricHsia7/bus/commit/345f1c719c78389bd0df4d17e65c36c006a194d6",
+          "time": "2025-03-09 02:31:17"
         },
         {
           "title": "Commit - update",
-          "url": "https://github.com/EricHsia7/bus/commit/8ea007d532a4c9d99499b8265b91e2299e5783aa",
-          "time": "2025-03-02 06:57:08"
+          "url": "https://github.com/EricHsia7/bus/commit/2f72d363e51a8218460cdd99d0975637dd412bf9",
+          "time": "2025-03-09 02:30:27"
         },
         {
           "title": "Commit - Updates",
-          "url": "https://github.com/EricHsia7/bus/commit/22a0a1f598543583141544f3e061950cd622aaf2",
-          "time": "2025-03-02 02:27:12"
+          "url": "https://github.com/EricHsia7/bus/commit/6194b96111f0116e9cba404d39c592ebbe32708d",
+          "time": "2025-03-09 02:00:27"
         }
       ],
       "open_graph_image": {
@@ -96,22 +106,22 @@
       "languages": [
         {
           "lang": "TypeScript",
-          "value": 617903,
+          "value": 618171,
           "color": "#3178c6"
         },
         {
           "lang": "CSS",
-          "value": 325688,
+          "value": 324107,
           "color": "#663399"
         },
         {
           "lang": "HTML",
-          "value": 61372,
+          "value": 61088,
           "color": "#e34c26"
         },
         {
           "lang": "JavaScript",
-          "value": 20281,
+          "value": 20378,
           "color": "#f1e05a"
         }
       ]
@@ -161,5 +171,5 @@
       ]
     }
   ],
-  "update_time": "2025-03-02 08:22:36"
+  "update_time": "2025-03-09 08:20:27"
 }
