@@ -4,6 +4,16 @@
       "full_name": "EricHsia7/bus",
       "tags": [
         {
+          "name": "v2.0.8",
+          "zipball_url": "https://api.github.com/repos/EricHsia7/bus/zipball/refs/tags/v2.0.8",
+          "tarball_url": "https://api.github.com/repos/EricHsia7/bus/tarball/refs/tags/v2.0.8",
+          "commit": {
+            "sha": "f71d66a81adfc9ed4cbe7a6bc31f2ddca28daca4",
+            "url": "https://api.github.com/repos/EricHsia7/bus/commits/f71d66a81adfc9ed4cbe7a6bc31f2ddca28daca4"
+          },
+          "node_id": "REF_kwDOIxKmNbByZWZzL3RhZ3MvdjIuMC44"
+        },
+        {
           "name": "v2.0.7",
           "zipball_url": "https://api.github.com/repos/EricHsia7/bus/zipball/refs/tags/v2.0.7",
           "tarball_url": "https://api.github.com/repos/EricHsia7/bus/tarball/refs/tags/v2.0.7",
@@ -95,25 +105,25 @@
         }
       ],
       "description": "A reader for organized bus information",
-      "pushed_at": "2025-05-18T04:02:00Z",
+      "pushed_at": "2025-05-23T13:53:43Z",
       "created_at": "2023-01-13T04:39:43Z",
-      "updated_at": "2025-05-18T04:01:20Z",
+      "updated_at": "2025-05-23T13:52:59Z",
       "active": true,
       "recent_events": [
         {
           "title": "Commit - Updates",
-          "url": "https://github.com/EricHsia7/bus/commit/5b86af9f92e2dccd79ed0981bba88ddc2fa68736",
-          "time": "2025-05-18 04:02:01"
+          "url": "https://github.com/EricHsia7/bus/commit/5b3617457129bf6182a42ea1e250f1aad4b22d7a",
+          "time": "2025-05-23 13:53:44"
         },
         {
           "title": "Commit - update",
-          "url": "https://github.com/EricHsia7/bus/commit/e1c2950e43815889bc83253f9a3be06642237b14",
-          "time": "2025-05-18 04:01:17"
+          "url": "https://github.com/EricHsia7/bus/commit/adc19ebef213ffe85615448a04b09214e17c2920",
+          "time": "2025-05-23 13:52:58"
         },
         {
-          "title": "PR - Replace HTML attributes with JavaScript event listener for the keyboard (closed)",
-          "url": "https://github.com/EricHsia7/bus/pull/136",
-          "time": "2025-05-18 04:01:16"
+          "title": "Commit - Updates",
+          "url": "https://github.com/EricHsia7/bus/commit/841f37bfb84a8571b16dd2588499cf8646aad62c",
+          "time": "2025-05-23 13:29:31"
         }
       ],
       "open_graph_image": {
@@ -126,17 +136,17 @@
       "languages": [
         {
           "lang": "TypeScript",
-          "value": 673293,
+          "value": 673193,
           "color": "#3178c6"
         },
         {
           "lang": "CSS",
-          "value": 344805,
+          "value": 345414,
           "color": "#663399"
         },
         {
           "lang": "HTML",
-          "value": 61545,
+          "value": 61396,
           "color": "#e34c26"
         },
         {
@@ -191,5 +201,5 @@
       ]
     }
   ],
-  "update_time": "2025-05-18 08:25:44"
+  "update_time": "2025-05-25 08:26:13"
 }
