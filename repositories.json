@@ -119,23 +119,7 @@
       "created_at": "2023-01-13T04:39:43Z",
       "updated_at": "2025-08-21T05:39:33Z",
       "active": false,
-      "recent_events": [
-        {
-          "title": "Commit - Updates",
-          "url": "https://github.com/EricHsia7/bus/commit/9817c38c3103490baaf6b92626e1ced2fa9413f2",
-          "time": "2025-08-21 05:40:17"
-        },
-        {
-          "title": "Commit - update",
-          "url": "https://github.com/EricHsia7/bus/commit/00f437b5d100288b4f5aa183b09843e8b3dad338",
-          "time": "2025-08-21 05:39:31"
-        },
-        {
-          "title": "PR - Improve icon search 2 (closed)",
-          "url": "https://github.com/EricHsia7/bus/pull/139",
-          "time": "2025-08-21 05:39:29"
-        }
-      ],
+      "recent_events": [],
       "open_graph_image": {
         "url": "https://repository-images.githubusercontent.com/588424757/1ec7f6c3-e498-49ac-957c-3c3128d7f183",
         "size": {
@@ -211,5 +195,5 @@
       ]
     }
   ],
-  "update_time": "2025-09-14 08:24:15"
+  "update_time": "2025-09-21 08:23:35"
 }
