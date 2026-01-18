@@ -4,6 +4,26 @@
       "full_name": "EricHsia7/bus",
       "tags": [
         {
+          "name": "v2.1.1",
+          "zipball_url": "https://api.github.com/repos/EricHsia7/bus/zipball/refs/tags/v2.1.1",
+          "tarball_url": "https://api.github.com/repos/EricHsia7/bus/tarball/refs/tags/v2.1.1",
+          "commit": {
+            "sha": "a5408e4d93dce9d2c84d3f23e812e7ea2b250919",
+            "url": "https://api.github.com/repos/EricHsia7/bus/commits/a5408e4d93dce9d2c84d3f23e812e7ea2b250919"
+          },
+          "node_id": "REF_kwDOIxKmNbByZWZzL3RhZ3MvdjIuMS4x"
+        },
+        {
+          "name": "v2.1.0",
+          "zipball_url": "https://api.github.com/repos/EricHsia7/bus/zipball/refs/tags/v2.1.0",
+          "tarball_url": "https://api.github.com/repos/EricHsia7/bus/tarball/refs/tags/v2.1.0",
+          "commit": {
+            "sha": "7fc87f7e4d45f953d702202b67427d856adf2958",
+            "url": "https://api.github.com/repos/EricHsia7/bus/commits/7fc87f7e4d45f953d702202b67427d856adf2958"
+          },
+          "node_id": "REF_kwDOIxKmNbByZWZzL3RhZ3MvdjIuMS4w"
+        },
+        {
           "name": "v2.0.9",
           "zipball_url": "https://api.github.com/repos/EricHsia7/bus/zipball/refs/tags/v2.0.9",
           "tarball_url": "https://api.github.com/repos/EricHsia7/bus/tarball/refs/tags/v2.0.9",
@@ -115,11 +135,24 @@
         }
       ],
       "description": "A reader for organized bus information",
-      "pushed_at": "2026-01-11T07:03:58Z",
+      "pushed_at": "2026-01-18T08:22:46Z",
       "created_at": "2023-01-13T04:39:43Z",
-      "updated_at": "2026-01-11T07:03:15Z",
+      "updated_at": "2026-01-18T08:22:17Z",
       "active": true,
-      "recent_events": [],
+      "recent_events": [
+        {
+          "title": "PR - undefined (undefined)",
+          "time": "NaN-NaN-NaN NaN:NaN:NaN"
+        },
+        {
+          "title": "PR - undefined (undefined)",
+          "time": "NaN-NaN-NaN NaN:NaN:NaN"
+        },
+        {
+          "title": "PR - undefined (undefined)",
+          "time": "NaN-NaN-NaN NaN:NaN:NaN"
+        }
+      ],
       "open_graph_image": {
         "url": "https://repository-images.githubusercontent.com/588424757/1ec7f6c3-e498-49ac-957c-3c3128d7f183",
         "size": {
@@ -130,22 +163,22 @@
       "languages": [
         {
           "lang": "TypeScript",
-          "value": 700940,
+          "value": 703003,
           "color": "#3178c6"
         },
         {
           "lang": "CSS",
-          "value": 355897,
+          "value": 347843,
           "color": "#663399"
         },
         {
           "lang": "HTML",
-          "value": 64530,
+          "value": 39369,
           "color": "#e34c26"
         },
         {
           "lang": "JavaScript",
-          "value": 21269,
+          "value": 13151,
           "color": "#f1e05a"
         }
       ]
@@ -195,5 +228,5 @@
       ]
     }
   ],
-  "update_time": "2026-01-11 08:31:15"
+  "update_time": "2026-01-18 08:31:00"
 }
