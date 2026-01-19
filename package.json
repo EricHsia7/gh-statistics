@@ -17,7 +17,7 @@
   "devDependencies": {},
   "dependencies": {
     "puppeteer": "^22.0.0",
-    "gh-pages": "^6.1.1",
+    "gh-pages": "^6.3.0",
     "canvas": "^2.11.2",
     "image-size":"^1.2.0"
   }
