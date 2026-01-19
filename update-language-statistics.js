@@ -19,18 +19,14 @@ function sha256N(content, n) {
 }
 
 async function getLanguageStatistics() {
-  const outputDir = './deploy/language_statistics';
-  await makeDirectory(outputDir);
   const limit = 16;
   const hashList = [];
-  const filePathList = [];
   const updateList = [];
   let index = 0;
   for (const repository of cachedRepositoriesList.repositories) {
     const hash = sha256N(`${repository.id}${repository.full_name}`, (repository.id % 3) + 2);
-    const filePath = `${outputDir}/repo_${hash}.json`;
+    const filePath = `./language_statistics/repo_${hash}.json`;
     hashList.push(hash);
-    filePathList.push(filePath);
     const fileContent = await readFile(filePath);
     if (fileContent !== false && typeof fileContent === 'string') {
       const json = JSON.parse(fileContent);
@@ -47,11 +43,12 @@ async function getLanguageStatistics() {
   updateList.sort(function (a, b) {
     return a[1] - b[1];
   });
-
+  const outputDir = './deploy/language_statistics';
+  await makeDirectory(outputDir);
   let count = 0;
   for (const item of updateList) {
     if (count < limit) {
-      const filePath = filePathList[item[0]];
+      const filePath = `${outputDir}/repo_${hashList[item[0]]}.json`;
       const languages = await makeRequestToGitHubAPI(cachedRepositoriesList.repositories[item[0]].languages_url, GITHUB_TOKEN);
       const content = {
         languages: languages,
