@@ -63,7 +63,7 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TODAY: ${{ steps.date.outputs.today }}
+          TODAY: ${{ steps.get-current-date.outputs.today }}
 
       - name: Cache repositories list
         id: cache-repositories-list
