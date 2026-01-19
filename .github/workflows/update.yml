@@ -9,11 +9,11 @@ on:
 jobs: 
   update:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: Check out repository code
         uses: actions/checkout@v6
 
-      - name: Setup Node.js environment
+      - name: Setup Node environment
         uses: actions/setup-node@v6
         with:
           node-version: 24

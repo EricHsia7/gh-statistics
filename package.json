@@ -2,7 +2,6 @@
   "name": "@erichsia7/gh-statistics",
   "version": "0.0.1",
   "description": "Log and display statstics",
-  "main": "index.js",
   "private": false,
   "repository": {
     "type": "git",
