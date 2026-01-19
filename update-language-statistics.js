@@ -5,6 +5,8 @@ const sha256 = require('sha256');
 
 const GITHUB_USERNAME = process.env.GITHUB_ACTOR;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const LIST_REPOSITORIES_TOKEN = process.env.LIST_REPOSITORIES_TOKEN;
+
 const now = new Date().getTime();
 
 function sha256N(content, n) {
@@ -49,7 +51,7 @@ async function getLanguageStatistics() {
   for (const item of updateList) {
     if (count < limit) {
       const filePath = `${outputDir}/repo_${hashList[item[0]]}.json`;
-      const languages = await makeRequestToGitHubAPI(cachedRepositoriesList.repositories[item[0]].languages_url, GITHUB_TOKEN);
+      const languages = await makeRequestToGitHubAPI(cachedRepositoriesList.repositories[item[0]].languages_url, LIST_REPOSITORIES_TOKEN);
       const content = {
         languages: languages,
         last_retrieval: now
