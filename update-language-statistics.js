@@ -1,13 +1,25 @@
 const { writeTextFile, readFile } = require('./files.js');
 const { makeRequestToGitHubAPI } = require('./github-api.js');
 const cachedRepositoriesList = require('./repositories-list/index.json');
+const sha256 = require('sha256');
 
 const GITHUB_USERNAME = process.env.GITHUB_ACTOR;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const TODAY = process.env.TODAY;
 
+function sha256N(content, n) {
+  let result = content;
+  if (n < 1) {
+    n = 1;
+  }
+  for (let i = 0; i < n; i++) {
+    result = sha256(result);
+  }
+  return result;
+}
+
 async function getLanguageStatistics() {
-  const outputDir = './deploy/language_statistics'
+  const outputDir = './deploy/language_statistics';
   const limit = 16;
   const hashList = [];
   const filePathList = [];
