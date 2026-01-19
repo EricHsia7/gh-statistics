@@ -141,7 +141,7 @@ async function renderGraph(data) {
   const background = `<path d="${backgroundPathData.join(' ')}" fill="url(#lingrad)"/>`;
   const curvePathData = segmentsToPath(simplifyPath(points, 0.8), 'M', 'M');
   const curve = `<path d="${curvePathData.join(' ')}" stroke="#56ab5a" stroke-width="${8 / 9}" />`;
-  const svgText = `<svg stroke-miterlimit="10" style="fill-rule: nonzero; clip-rule: evenodd; stroke-linecap: round; stroke-linejoin: round" version="1.1" viewBox="0 0 ${width + padding * 2} ${height + padding * 2}" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${linearGradient}</defs><g width="${width}" height="${height}" transform="translate(${padding} ${padding})">${background}</g></svg>`;
+  const svgText = `<svg stroke-miterlimit="10" style="fill-rule: nonzero; clip-rule: evenodd; stroke-linecap: round; stroke-linejoin: round" version="1.1" viewBox="0 0 ${width + padding * 2} ${height + padding * 2}" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${linearGradient}</defs><g width="${width}" height="${height}" transform="translate(${padding} ${padding})">${background}${curve}</g></svg>`;
 
   for (const scale of [3, 6, 12, 15]) {
     const fileName = `contribution_graph@${scale}x`;
