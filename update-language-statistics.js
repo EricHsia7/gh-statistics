@@ -21,7 +21,7 @@ function sha256N(content, n) {
 }
 
 async function getLanguageStatistics() {
-  const limit = 64;
+  const limit = 16;
   const hashList = [];
   const updateList = [];
   let index = 0;
