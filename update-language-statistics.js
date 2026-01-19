@@ -13,7 +13,7 @@ async function getLanguageStatistics() {
   const filePathList = [];
   const updateList = [];
   let index = 0;
-  for (const repository of cachedRepositoriesList.list) {
+  for (const repository of cachedRepositoriesList.repositories) {
     const hash = sha256N(`${repository.id}${repository.full_name}`, (repository.id % 3) + 2);
     const filePath = `${outputDir}/repo_${hash}.json`;
     hashList.push(hash);
@@ -34,7 +34,7 @@ async function getLanguageStatistics() {
     if (count < limit) {
       const now = new Date().getTime();
       const filePath = filePathList[repositoryIndex];
-      const languages = await makeRequestToGitHubAPI(cachedRepositoriesList.list[repositoryIndex].languages_url, GITHUB_TOKEN);
+      const languages = await makeRequestToGitHubAPI(cachedRepositoriesList.repositories[repositoryIndex].languages_url, GITHUB_TOKEN);
       const content = {
         languages: languages,
         last_retrieval: now
