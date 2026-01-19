@@ -3,6 +3,7 @@ const path = require('path');
 const { Resvg } = require('@resvg/resvg-js');
 const { Jimp } = require('jimp');
 const puppeteer = require('puppeteer');
+const md5 = require('md5');
 const { makeDirectory } = require('./files.js');
 const { segmentsToPath, simplifyPath } = require('./graphic.js');
 
@@ -224,7 +225,7 @@ async function getOpenGraphImage(url) {
     };
   });
   await browser.close();
-  const filePath = `./${btoa(encodeURIComponent(result.url)).replace(/[\/\+\-\=\.\:]*/gim, '')}.png`;
+  const filePath = `./${md5(result.url)}.png`;
   await downloadImage(result.url, filePath);
   const dimensions = sizeOf(filePath);
   return {

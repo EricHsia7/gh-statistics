@@ -2,9 +2,9 @@
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
     "jimp": "^1.6.0",
-    "puppeteer": "^24.15.0"
-  },
-  "devDependencies": {
+    "puppeteer": "^24.15.0",
+    "md5": "^2.3.0",
     "gh-pages": "^6.3.0"
-  }
+  },
+  "devDependencies": {}
 }
