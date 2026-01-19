@@ -128,17 +128,18 @@ async function renderGraph(data) {
     count++;
   }
 
+  const range = max - min + 5;
   const points = [];
   for (let i = 0; i < count; i++) {
     const x = (i / (count - 1)) * width;
-    const y = (1 - processedData[i] / (max - min)) * height;
+    const y = (1 - processedData[i] / range) * height;
     points.push({ x, y });
   }
 
   const linearGradient = `<linearGradient id="lingrad" gradientUnits="userSpaceOnUse" x1="${width / 2}" y1="0" x2="${width / 2}" y2="${height}"><stop offset="0%" stop-color="rgba(86, 171, 90, 0.3)" /><stop offset="73%" stop-color="rgba(86, 171, 90, 0.09)" /><stop offset="100%" stop-color="rgba(86, 171, 90, 0)" /></linearGradient>`;
   const pathData = [`M0,${height + 10}`].concat(segmentsToPath(simplifyPath(points, 0.8), 'L', 'L')).concat([`L${width},${height + 10}`, `L${0},${height + 10}`, 'Z']);
   const path = `<path d="${pathData.join(' ')}" stroke="#56ab5a" stroke-width="${8 / 9}" fill="url(#lingrad)"/>`;
-  const svgText = `<svg stroke-miterlimit="10" style="fill-rule: nonzero; clip-rule: evenodd; stroke-linecap: round; stroke-linejoin: round" version="1.1" viewBox="0 0 ${width} ${height}" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${linearGradient}</defs><g width="${width}" height="${height}" transform="translate(${-5} ${0})">${path}</g></svg>`;
+  const svgText = `<svg stroke-miterlimit="10" style="fill-rule: nonzero; clip-rule: evenodd; stroke-linecap: round; stroke-linejoin: round" version="1.1" viewBox="0 0 ${width} ${height}" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${linearGradient}</defs><g width="${width}" height="${height}" transform="translate(${0} ${0})">${path}</g></svg>`;
 
   for (const scale of [3, 6, 12, 15]) {
     const fileName = `contribution_graph@${scale}x`;
