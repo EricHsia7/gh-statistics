@@ -3,9 +3,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 8 * * 0"
-  push:
-    branches:
-      - main
+    - cron: "0 8 * * 3"
+
 jobs:
   update:
     runs-on: ubuntu-latest
