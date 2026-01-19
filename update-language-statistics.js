@@ -6,6 +6,7 @@ const sha256 = require('sha256');
 const GITHUB_USERNAME = process.env.GITHUB_ACTOR;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const TODAY = process.env.TODAY;
+const now = new Date().getTime();
 
 function sha256N(content, n) {
   let result = content;
@@ -33,7 +34,11 @@ async function getLanguageStatistics() {
     const fileContent = await readFile(filePath);
     if (fileContent !== false && typeof fileContent === 'string') {
       const json = JSON.parse(fileContent);
-      updateList.push([index, json.last_retrieval]);
+      if (now - json.last_retrieval > 60 * 60 * 24 * 7 * 1000) {
+        updateList.push([index, json.last_retrieval]);
+      } else {
+        updateList.push([index, Infinity]);
+      }
     } else {
       updateList.push([index, -Infinity]);
     }
@@ -42,11 +47,10 @@ async function getLanguageStatistics() {
   updateList.sort((a, b) => a[1] - b[1]);
 
   let count = 0;
-  for (const repositoryIndex of updateList) {
+  for (const item of updateList) {
     if (count < limit) {
-      const now = new Date().getTime();
-      const filePath = filePathList[repositoryIndex];
-      const languages = await makeRequestToGitHubAPI(cachedRepositoriesList.repositories[repositoryIndex].languages_url, GITHUB_TOKEN);
+      const filePath = filePathList[item[0]];
+      const languages = await makeRequestToGitHubAPI(cachedRepositoriesList.repositories[item[0]].languages_url, GITHUB_TOKEN);
       const content = {
         languages: languages,
         last_retrieval: now
