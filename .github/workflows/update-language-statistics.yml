@@ -1,9 +1,9 @@
-name: Update
+name: Update Language Statistics
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 8 * * 0"
-    - cron: "0 8 * * 3"
+    - cron: "0 8 * * 1"
+    - cron: "0 8 * * 5"
 
 jobs:
   update:
@@ -48,48 +48,34 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Get latest Chrome version
-        id: chrome-version
-        run: |
-          VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Restore cached Chrome
-        id: restore-cached-chrome
+      - name: Restore cached repositories list
+        id: restore-cached-repositories-list
         uses: actions/cache/restore@v5
         with:
           path: |
-            ~/.cache/puppeteer
-          key: puppeteer-chrome-${{ runner.os }}-${{ steps.chrome-version.outputs.version }}
+            ./repositories-list
+          key: repositories-list-${{ steps.get-current-date.outputs.today }}
           restore-keys: |
-            puppeteer-chrome-${{ runner.os }}-${{ steps.chrome-version.outputs.version }}
-            puppeteer-chrome-${{ runner.os }}-
+            repositories-list-${{ steps.get-current-date.outputs.today }}
+            repositories-list-
 
-      - name: Install Chrome
-        run: npx puppeteer browsers install chrome
+      - name: List repositories
+        run: node list-repositories.js
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TODAY: ${{ steps.date.outputs.today }}
 
-      - name: Cache Chrome
-        id: cache-chrome
+      - name: Cache repositories list
+        id: cache-repositories-list
         uses: actions/cache/save@v5
         with:
           path: |
-            ~/.cache/puppeteer
-          key: ${{ steps.restore-cached-chrome.outputs.cache-primary-key }}
+            ./repositories-list
+          key: ${{ steps.restore-cached-repositories-list.outputs.cache-primary-key }}
 
-      - name: Update graph
-        run: node update-graph.js
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update statistics
-        run: node update-stats.js
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build language statistics
-        run: node build-language-statistics.js
+      - name: Update language statistics
+        run: node update-language-statistics.js
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,6 +83,6 @@ jobs:
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          npx gh-pages -u "github-actions-bot <support+actions@github.com>" -b release -d ./dist/ --add
+          npx gh-pages -u "github-actions-bot <support+actions@github.com>" -b main -d ./deploy/ --add
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

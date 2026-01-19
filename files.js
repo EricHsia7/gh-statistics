@@ -5,19 +5,18 @@ async function makeDirectory(path) {
   // Check if the path already exists
   try {
     await fs.promises.access(path);
-    // If there is no error, it means the path already exists
-    console.log('Given directory already exists!');
+    return 0;
   } catch (error) {
     // If there is an error, it means the path does not exist
     // Try to create the directory
     try {
       await fs.promises.mkdir(path, { recursive: true });
-      // If there is no error, log a success message
-      console.log('New directory created successfully!');
+      return 1;
     } catch (error) {
       // If there is an error, log it
       console.log(error);
       process.exit(1);
+      return 2;
     }
   }
 }
@@ -103,8 +102,12 @@ async function getFiles(dirPath, extension) {
 }
 
 async function readFile(path) {
-  const fileContent = await fs.promises.readFile(path, 'utf8');
-  return fileContent;
+  try {
+    const fileContent = await fs.promises.readFile(path, 'utf8');
+    return fileContent;
+  } catch (e) {
+    return false;
+  }
 }
 
 async function moveFile(source, destination) {
