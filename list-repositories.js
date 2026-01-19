@@ -27,8 +27,6 @@ async function main() {
   const outputDirCreation = await makeDirectory(outputDir);
   let useCache = false;
   if (outputDirCreation === 0) {
-    useCache = true;
-  } else if (outputDirCreation === 1) {
     const date = await readFile(`${outputDir}/date.txt`);
     const time = new Date(date).getTime();
     if (new Date().getTime() - time < 60 * 60 * 24 * 1000 * 7) {
