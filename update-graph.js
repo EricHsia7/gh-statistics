@@ -1,11 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const { Resvg } = require('@resvg/resvg-js');
-const { Jimp } = require('jimp');
 const puppeteer = require('puppeteer');
 
 const { makeDirectory } = require('./files.js');
-const { segmentsToPath, simplifyPath } = require('./graphic.js');
+const { segmentsToPath, simplifyPath, rasterize } = require('./graphic.js');
 
 const GITHUB_USERNAME = process.env.GITHUB_ACTOR;
 // const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -65,21 +63,6 @@ function smoothArray(array) {
   return result;
 }
 
-async function rasterize(svgText, outputPath, width, height, scale) {
-  const svg = Buffer.from(svgText, 'utf-8');
-  const options = {
-    fitTo: {
-      mode: 'width',
-      value: width * scale
-    }
-  };
-  const resvg = new Resvg(svg, options);
-  const pngData = resvg.render();
-  const pngBuffer = pngData.asPng();
-  const resizedImage = await Jimp.fromBuffer(pngBuffer);
-  resizedImage.resize({ w: width, h: height });
-  await resizedImage.write(outputPath);
-}
 
 async function renderGraph(data) {
   const imagesDir = './dist/images/';

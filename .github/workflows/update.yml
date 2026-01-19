@@ -17,10 +17,10 @@ jobs:
         with:
           node-version: 24
 
-      - name: Get current date
-        id: get-current-date
+      - name: Get year month
+        id: get-year-month
         run: |
-          echo "today=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+          echo "year_month=$(date +'%Y-%m')" >> "$GITHUB_OUTPUT"
 
       - name: Restore cached dependencies
         id: restore-cached-dependencies
@@ -87,6 +87,27 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Restore cached colors.json
+        id: restore-cached-colors-json
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ./colors.json
+          key: colors-json-${{ steps.get-year-month.outputs.year_month }}
+          restore-keys: |
+            colors-json-${{ steps.get-year-month.outputs.year_month }}
+          
+      - name: Fetch colors.json
+        run: curl -C - "https://raw.githubusercontent.com/ozh/github-colors/master/colors.json" -o "./colors.json"
+
+      - name: Cache colors.json
+        id: cache-colors-json
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            ./colors.json
+          key: ${{ steps.restore-cached-colors-json.outputs.cache-primary-key }}
 
       - name: Build language statistics
         run: node build-language-statistics.js

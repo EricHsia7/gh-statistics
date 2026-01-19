@@ -1,3 +1,6 @@
+const { Resvg } = require('@resvg/resvg-js');
+const { Jimp } = require('jimp');
+
 function distanceToSegment(point, start, end) {
   var dx = end.x - start.x;
   var dy = end.y - start.y;
@@ -65,8 +68,25 @@ function segmentsToPath(segments, firstCommand = 'M', lastCommand = 'M') {
   return result;
 }
 
+async function rasterize(svgText, outputPath, width, height, scale) {
+  const svg = Buffer.from(svgText, 'utf-8');
+  const options = {
+    fitTo: {
+      mode: 'width',
+      value: width * scale
+    }
+  };
+  const resvg = new Resvg(svg, options);
+  const pngData = resvg.render();
+  const pngBuffer = pngData.asPng();
+  const resizedImage = await Jimp.fromBuffer(pngBuffer);
+  resizedImage.resize({ w: width, h: height });
+  await resizedImage.write(outputPath);
+}
+
 module.exports = {
   segmentsToPath,
   distanceToSegment,
-  simplifyPath
+  simplifyPath,
+  rasterize
 };
