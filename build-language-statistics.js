@@ -13,11 +13,11 @@ async function main() {
   for (const file of files) {
     const fileContent = await readFile(file.path.full);
     const json = JSON.parse(fileContent);
-    for (const language in json) {
+    for (const language in json.languages) {
       if (!languages.hasOwnProperty(language)) {
         languages[language] = 0;
       }
-      languages[language] += json[language];
+      languages[language] += json.languages[language];
     }
   }
   await writeTextFile('./dist/language_statistics.json', JSON.stringify(languages, null, 2));
