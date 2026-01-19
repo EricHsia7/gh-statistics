@@ -1,7 +1,10 @@
 {
-  "devDependencies": {
-    "gh-pages": "^6.3.0",
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "jimp": "^1.6.0",
     "puppeteer": "^24.15.0"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
 }
