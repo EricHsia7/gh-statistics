@@ -15,7 +15,7 @@
   "homepage": "https://github.com/EricHsia7/gh-statistics/",
   "devDependencies": {},
   "dependencies": {
-    "puppeteer": "^22.0.0",
+    "puppeteer": "^24.15.0",
     "gh-pages": "^6.3.0",
     "canvas": "^2.11.2",
     "image-size":"^1.2.0"
