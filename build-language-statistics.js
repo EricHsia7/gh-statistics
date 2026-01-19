@@ -1,4 +1,4 @@
-const { getFiles, readFile, writeTextFile } = require('./files.js');
+const { getFiles, readFile, writeTextFile, makeDirectory } = require('./files.js');
 const { rasterize } = require('./graphic.js');
 const colors = require('./colors.json');
 
