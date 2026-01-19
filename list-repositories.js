@@ -27,7 +27,7 @@ async function main() {
   const outputDirCreation = await makeDirectory(outputDir);
   let useCache = false;
   if (outputDirCreation === 0) {
-    useCache = false;
+    useCache = true;
   } else if (outputDirCreation === 1) {
     const date = await readFile(`${outputDir}/date.txt`);
     const time = new Date(date).getTime();
@@ -37,7 +37,7 @@ async function main() {
       useCache = false;
     }
   } else {
-    useCache = true;
+    useCache = false;
   }
 
   if (useCache) {
