@@ -1,4 +1,4 @@
-const { writeTextFile, readFile } = require('./files.js');
+const { writeTextFile, readFile, makeDirectory } = require('./files.js');
 const { makeRequestToGitHubAPI } = require('./github-api.js');
 const cachedRepositoriesList = require('./repositories-list/index.json');
 const sha256 = require('sha256');
@@ -21,6 +21,7 @@ function sha256N(content, n) {
 
 async function getLanguageStatistics() {
   const outputDir = './deploy/language_statistics';
+  await makeDirectory(outputDir);
   const limit = 16;
   const hashList = [];
   const filePathList = [];
