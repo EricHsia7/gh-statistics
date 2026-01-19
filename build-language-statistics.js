@@ -33,10 +33,10 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
   }
 
   // Dimensions & Configuration
-  const width = 512;
+  const width = 400;
   // Dynamic height based on number of items prevents squishing if list is long
   const rowHeight = 20;
-  const margin = { top: 20, right: 50, bottom: 20, left: 80 }; // Increased left margin for labels
+  const margin = { top: 10, right: 50, bottom: 10, left: 80 }; // Increased left margin for labels
   const height = rowHeight * count + margin.top + margin.bottom;
 
   const chartWidth = width - margin.left - margin.right;
