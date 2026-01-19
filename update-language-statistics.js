@@ -54,7 +54,7 @@ async function getLanguageStatistics() {
       const languages = await makeRequestToGitHubAPI(cachedRepositoriesList.repositories[item[0]].languages_url, LIST_REPOSITORIES_TOKEN);
       const content = {
         languages: languages,
-        last_retrieval: now
+        last_retrieval: new Date().getTime()
       };
       await writeTextFile(filePath, JSON.stringify(content, null, 2));
     }
