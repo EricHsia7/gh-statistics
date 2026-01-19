@@ -1,23 +1,9 @@
 {
-  "name": "@erichsia7/gh-statistics",
-  "version": "0.0.1",
-  "description": "Log and display statstics",
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/EricHsia7/gh-statistics.git"
-  },
-  "keywords": ["stats"],
-  "author": "EricHsia7",
-  "bugs": {
-    "url": "https://github.com/EricHsia7/gh-statistics/issues"
-  },
-  "homepage": "https://github.com/EricHsia7/gh-statistics/",
-  "devDependencies": {},
-  "dependencies": {
-    "puppeteer": "^24.15.0",
-    "gh-pages": "^6.3.0",
+  "devDependencies": {
     "canvas": "^2.11.2",
-    "image-size":"^1.2.0"
-  }
+    "gh-pages": "^6.3.0",
+    "image-size": "^1.2.0",
+    "puppeteer": "^24.15.0"
+  },
+  "dependencies": {}
 }
