@@ -5,11 +5,10 @@ const { makeRequestToGitHubAPI } = require('./github-api.js');
 
 const GITHUB_USERNAME = process.env.GITHUB_ACTOR;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const TODAY = process.env.TODAY;
 
 async function listRepositories() {
   async function getPage(page) {
-    const url = `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&page=${page}`;
+    const url = `https://api.github.com/user/repos?per_page=100&page=${page}`;
     const data = await makeRequestToGitHubAPI(url, GITHUB_TOKEN);
     if (data.length > 0) {
       const nextPageData = await getPage(page + 1);
