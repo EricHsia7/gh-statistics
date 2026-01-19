@@ -36,6 +36,8 @@ async function main() {
     } else {
       useCache = false;
     }
+  } else {
+    useCache = true;
   }
 
   if (useCache) {
