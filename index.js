@@ -93,6 +93,15 @@ async function rasterize(svgText, outputPath, width, height, scale) {
   await resizedImage.write(outputPath);
 }
 
+async function sizeOf(path) {
+  // Read the image
+  const image = await Jimp.read(path);
+  // Access width and height
+  const width = image.bitmap.width;
+  const height = image.bitmap.height;
+  return { width, height };
+}
+
 async function renderGraph(data) {
   const imagesDir = './dist/images/';
   await makeDirectory(imagesDir);
@@ -200,9 +209,9 @@ async function getOpenGraphImage(url) {
     };
   });
   await browser.close();
-  const name = `./${btoa(encodeURIComponent(result.url)).replace(/[\/\+\-\=\.\:]*/gim, '')}.png`;
-  await downloadImage(result.url, name);
-  const dimensions = sizeOf(name);
+  const filePath = `./${btoa(encodeURIComponent(result.url)).replace(/[\/\+\-\=\.\:]*/gim, '')}.png`;
+  await downloadImage(result.url, filePath);
+  const dimensions = sizeOf(filePath);
   return {
     url: result.url,
     size: {
