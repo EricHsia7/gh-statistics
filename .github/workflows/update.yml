@@ -44,6 +44,34 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Get latest Chrome version
+        id: chrome-version
+        run: |
+          VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Restore cached Chrome
+        id: restore-cached-chrome
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ~/.cache/puppeteer
+          key: puppeteer-chrome-${{ runner.os }}-${{ steps.chrome-version.outputs.version }}
+          restore-keys: |
+            puppeteer-chrome-${{ runner.os }}-${{ steps.chrome-version.outputs.version }}
+            puppeteer-chrome-${{ runner.os }}-
+
+      - name: Install Chrome
+        run: npx puppeteer browsers install chrome
+
+      - name: Cache Chrome
+        id: cache-chrome
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            ~/.cache/puppeteer
+          key: ${{ steps.restore-cached-chrome.outputs.cache-primary-key }}
+
       - name: Update
         run: node index.js
         env:
