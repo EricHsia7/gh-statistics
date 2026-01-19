@@ -5,7 +5,6 @@ const sha256 = require('sha256');
 
 const GITHUB_USERNAME = process.env.GITHUB_ACTOR;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const TODAY = process.env.TODAY;
 const now = new Date().getTime();
 
 function sha256N(content, n) {
@@ -45,7 +44,9 @@ async function getLanguageStatistics() {
     }
     index++;
   }
-  updateList.sort((a, b) => a[1] - b[1]);
+  updateList.sort(function (a, b) {
+    return a[1] - b[1];
+  });
 
   let count = 0;
   for (const item of updateList) {
