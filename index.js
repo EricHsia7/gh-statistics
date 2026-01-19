@@ -115,18 +115,29 @@ async function renderGraph(data) {
 
   const processedData = smoothArray(smoothArray(data));
 
-  const min = Math.min(...processedData);
-  const max = Math.max(...processedData) + 5;
-  const length = processedData.length;
+  let min = Infinity;
+  let max = -Infinity;
+  let count = 0;
+  for (const dataPoint of processedData) {
+    if (dataPoint > max) {
+      max = dataPoint;
+    }
+    if (dataPoint < min) {
+      min = dataPoint;
+    }
+    count++;
+  }
+
   const points = [];
-  for (let i = 0; i < length; i++) {
-    const x = (i / (length - 1)) * width;
+  for (let i = 0; i < count; i++) {
+    const x = (i / (count - 1)) * width;
     const y = (1 - processedData[i] / (max - min)) * height;
     points.push({ x, y });
   }
+
   const linearGradient = `<linearGradient id="lingrad" gradientUnits="userSpaceOnUse" x1="${width / 2}" y1="0" x2="${width / 2}" y2="${height}"><stop offset="0%" stop-color="rgba(86, 171, 90, 0.3)" /><stop offset="73%" stop-color="rgba(86, 171, 90, 0.09)" /><stop offset="100%" stop-color="rgba(86, 171, 90, 0)" /></linearGradient>`;
-  const pathData = `M${0},${height + 10} ${segmentsToPath(simplifyPath(points, 0.8), 1)} L${width + 10},${height + 10} L${0},${height + 10} Z`;
-  const path = `<path d="${pathData}" stroke="#56ab5a" stroke-width="${8 / 9}" fill="url(#lingrad)"/>`;
+  const pathData = [`M0,${height + 10}`].concat(segmentsToPath(simplifyPath(points, 0.8), 'L', 'L')).concat([`L${width},${height + 10}`, `L${0},${height + 10}`, 'Z']);
+  const path = `<path d="${pathData.join(' ')}" stroke="#56ab5a" stroke-width="${8 / 9}" fill="url(#lingrad)"/>`;
   const svgText = `<svg stroke-miterlimit="10" style="fill-rule: nonzero; clip-rule: evenodd; stroke-linecap: round; stroke-linejoin: round" version="1.1" viewBox="0 0 ${width} ${height}" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${linearGradient}</defs><g width="${width}" height="${height}" transform="translate(${-5} ${0})">${path}</g></svg>`;
 
   for (const scale of [3, 6, 12, 15]) {

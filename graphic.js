@@ -1,19 +1,3 @@
-function segmentsToPath(segments, scale) {
-  if (segments.length < 1) {
-    return '';
-  }
-  var pathCommand = `M${segments[0].x * scale},${segments[0].y * scale}`;
-  for (var i = 1; i < segments.length - 1; i++) {
-    var c = segments[i];
-    var n = segments[i + 1] || c;
-
-    pathCommand += `Q${c.x * scale},${c.y * scale},${(c.x * scale + n.x * scale) / 2},${(c.y * scale + n.y * scale) / 2}`;
-  }
-  var lastPoint = segments[segments.length - 1];
-  pathCommand += `M${lastPoint.x * scale},${lastPoint.y * scale}`;
-  return pathCommand;
-}
-
 function distanceToSegment(point, start, end) {
   var dx = end.x - start.x;
   var dy = end.y - start.y;
@@ -62,6 +46,23 @@ function simplifyPath(points, tolerance) {
   } else {
     return [points[0], points[points.length - 1]];
   }
+}
+
+function segmentsToPath(segments, firstCommand = 'M', lastCommand = 'M') {
+  const len1 = segments.length - 1;
+  if (len1 < 0) {
+    return [];
+  }
+  const result = [];
+  result.push(`${firstCommand}${segments[0].x},${segments[0].y}`);
+  for (let i = 1; i < len1; i++) {
+    const current = segments[i];
+    const next = segments[i + 1] || current;
+    result.push(`Q${current.x},${current.y},${(current.x + next.x) / 2},${(current.y + next.y) / 2}`);
+  }
+  const lastPoint = segments[len1];
+  result.push(`${lastCommand}${lastPoint.x},${lastPoint.y}`);
+  return result;
 }
 
 function pathCommandToCoordinates(str, precision) {
