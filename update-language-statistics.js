@@ -33,7 +33,7 @@ async function getLanguageStatistics() {
       if (now - json.last_retrieval > 60 * 60 * 24 * 7 * 1000) {
         updateList.push([index, json.last_retrieval]);
       } else {
-        updateList.push([index, Infinity]);
+        updateList.push([index, json.last_retrieval * 1000]);
       }
     } else {
       updateList.push([index, -Infinity]);
