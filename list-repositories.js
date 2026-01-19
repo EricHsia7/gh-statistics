@@ -44,7 +44,7 @@ async function main() {
     const list = await listRepositories();
     const result = { repositories: list };
     await writeTextFile(`${outputDir}/index.json`, JSON.stringify(result));
-    await writeTextFile(`${outputDir}/date.txt`, TODAY);
+    await writeTextFile(`${outputDir}/date.txt`, new Date().toISOString());
     console.log('Successfully updated repositories list.');
   }
 
