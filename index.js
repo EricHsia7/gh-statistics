@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { Resvg } = require('@resvg/resvg-js');
+const { Jimp } = require('jimp');
 const puppeteer = require('puppeteer');
 const { makeDirectory } = require('./files.js');
 const { segmentsToPath, simplifyPath } = require('./graphic.js');
