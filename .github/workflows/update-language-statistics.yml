@@ -2,7 +2,7 @@ name: Update Language Statistics
 on:
   workflow_dispatch:
   schedule:
-    - cron: '55 15 * * *'
+    - cron: '0 4 * * *'
 
 jobs:
   update:
