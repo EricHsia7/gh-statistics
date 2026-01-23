@@ -53,18 +53,21 @@ function simplifyPath(points, tolerance) {
   }
 }
 
-function segmentsToPath(segments) {
-  const segmentsLength1 = segments.length - 1;
-  if (segmentsLength1 < 0) {
-    return '';
+function segmentsToPath(segments, firstCommand = 'M', lastCommand = 'M') {
+  const len1 = segments.length - 1;
+  if (len1 < 0) {
+    return [];
   }
-  const pathCommand = [`M${segments[0][0]} ${segments[0][1]}`];
-  for (let i = 1; i < segmentsLength1; i++) {
+  const result = [];
+  result.push(`${firstCommand}${segments[0][0]},${segments[0][1]}`);
+  for (let i = 1; i < len1; i++) {
     const current = segments[i];
     const next = segments[i + 1] || current;
-    pathCommand.push(`Q${current[0]} ${current[1]} ${(current[0] + next[0]) / 2} ${(current[1] + next[1]) / 2}`);
+    result.push(`Q${current[0]},${current[1]},${(current[0] + next[0]) / 2},${(current[1] + next[1]) / 2}`);
   }
-  return pathCommand.join(' ');
+  const lastPoint = segments[len1];
+  result.push(`${lastCommand}${lastPoint[0]},${lastPoint[1]}`);
+  return result;
 }
 
 function processStrokeSamples(samples, state, config) {

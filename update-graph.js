@@ -124,13 +124,13 @@ async function renderGraph(data) {
   const padding = 1;
   const linearGradient = `<linearGradient id="lingrad" gradientUnits="userSpaceOnUse" x1="${width / 2}" y1="0" x2="${width / 2}" y2="${height}"><stop offset="0%" stop-color="rgba(86, 171, 90, 0.3)" /><stop offset="73%" stop-color="rgba(86, 171, 90, 0.09)" /><stop offset="100%" stop-color="rgba(86, 171, 90, 0)" /></linearGradient>`;
 
-  const backgroundPathData = [`M${strokeData.points[0][0]},${height + 10}`].concat(segmentsToPath(strokeData.points, 'L', 'L')).concat([`L${strokeData.points[strokeData.points.length - 1][0]},${height + 10}`, `L${strokeData.points[0][0]},${height + 10}`, 'Z']);
+  const backgroundPathData = [`M${strokeData.points[0][0]},${height + 10}`].concat(segmentsToPath(strokeData.points, 'L', 'L')).concat(`L${strokeData.points.at(-1)[0]},${height + 10}`, `L${strokeData.points[0][0]},${height + 10}`, 'Z');
   const background = `<path d="${backgroundPathData.join(' ')}" fill="url(#lingrad)"/>`;
   const leftPathData = segmentsToPath(strokeData.pointsLeft, 'M', 'L');
   const centerPathData = segmentsToPath(strokeData.points, 'M', 'L');
   const rightPathData = segmentsToPath(strokeData.pointsRight, 'M', 'L');
 
-  const stroke = `<path d="${leftPathData}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/><path d="${centerPathData}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/><path d="${rightPathData}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/>`;
+  const stroke = `<path d="${leftPathData.join(' ')}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/><path d="${centerPathData.join(' ')}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/><path d="${rightPathData.join(' ')}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/>`;
   const svgText = `<svg stroke-miterlimit="10" style="fill-rule: nonzero; clip-rule: evenodd; stroke-linecap: round; stroke-linejoin: round" version="1.1" viewBox="0 0 ${width + padding * 2} ${height + padding * 2}" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${linearGradient}</defs><g width="${width}" height="${height}" transform="translate(${padding} ${padding})">${background}${stroke}</g></svg>`;
 
   for (const scale of [3, 6, 12, 15]) {
