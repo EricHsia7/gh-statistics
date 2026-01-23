@@ -123,7 +123,8 @@ async function renderGraph(data) {
   const strokeFill = '#56ab5a';
   const padding = 1;
   const linearGradient = `<linearGradient id="lingrad" gradientUnits="userSpaceOnUse" x1="${width / 2}" y1="0" x2="${width / 2}" y2="${height}"><stop offset="0%" stop-color="rgba(86, 171, 90, 0.3)" /><stop offset="73%" stop-color="rgba(86, 171, 90, 0.09)" /><stop offset="100%" stop-color="rgba(86, 171, 90, 0)" /></linearGradient>`;
-  const backgroundPathData = [`M0,${height + 10}`].concat(segmentsToPath(strokeData.points, 'L', 'L')).concat([`L${width},${height + 10}`, `L${0},${height + 10}`, 'Z']);
+
+  const backgroundPathData = [`M${strokeData.points[0][0]},${height + 10}`].concat(segmentsToPath(strokeData.points, 'L', 'L')).concat([`L${strokeData.points.at(-1)[0]},${height + 10}`, `L${strokeData.points[0][0]},${height + 10}`, 'Z']);
   const background = `<path d="${backgroundPathData.join(' ')}" fill="url(#lingrad)"/>`;
   const leftPathData = segmentsToPath(strokeData.pointsLeft, 'M', 'L');
   const centerPathData = segmentsToPath(strokeData.points, 'M', 'L');
