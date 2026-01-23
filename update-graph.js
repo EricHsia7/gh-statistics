@@ -129,7 +129,7 @@ async function renderGraph(data) {
   const centerPathData = segmentsToPath(strokeData.points, 'M', 'L');
   const rightPathData = segmentsToPath(strokeData.pointsRight, 'M', 'L');
 
-  const stroke = `<path d="${leftPathData.join(' ')}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/><path d="${centerPathData.join(' ')}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/><path d="${rightPathData.join(' ')}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/>`;
+  const stroke = `<path d="${leftPathData}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/><path d="${centerPathData}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/><path d="${rightPathData}" stroke="${strokeFill}" stroke-width="${strokeWidth}" fill="none"/>`;
   const svgText = `<svg stroke-miterlimit="10" style="fill-rule: nonzero; clip-rule: evenodd; stroke-linecap: round; stroke-linejoin: round" version="1.1" viewBox="0 0 ${width + padding * 2} ${height + padding * 2}" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs>${linearGradient}</defs><g width="${width}" height="${height}" transform="translate(${padding} ${padding})">${background}${stroke}</g></svg>`;
 
   for (const scale of [3, 6, 12, 15]) {
