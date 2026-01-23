@@ -77,6 +77,10 @@ function processStrokeSamples(samples, state, config) {
 
   let { lastX, lastY, lastTime, lastDyDxSign, side } = state;
 
+  points.push([lastX, lastY]);
+  pointsLeft.push([lastX, lastY]);
+  pointsRight.push([lastX, lastY]);
+
   for (const [x, y, f, time] of samples) {
     const dt = time - lastTime;
 
