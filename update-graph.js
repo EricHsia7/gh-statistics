@@ -135,7 +135,7 @@ async function renderGraph(data) {
 
   for (const scale of [3, 6, 12, 15]) {
     const fileName = `contribution_graph@${scale}x`;
-    const outputFilePath = `${imagesDir}${fileName}.png`;
+    const outputFilePath = `${imagesDir}${fileName}`;
     await rasterize(svgText, outputFilePath, width * scale, height * scale, 2);
   }
 }

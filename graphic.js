@@ -1,5 +1,6 @@
 const { Resvg } = require('@resvg/resvg-js');
 const { Jimp } = require('jimp');
+const sharp = require('sharp');
 
 function distanceToSegment(point, start, end) {
   let dx = end[0] - start[0];
@@ -185,7 +186,8 @@ async function rasterize(svgText, outputPath, width, height, scale) {
   const pngBuffer = pngData.asPng();
   const resizedImage = await Jimp.fromBuffer(pngBuffer);
   resizedImage.resize({ w: width, h: height });
-  await resizedImage.write(outputPath);
+  await resizedImage.write(`${outputPath}.png`);
+  await sharp(pngBuffer).resize(width, height).webp({ lossless: true }).toFile(`${outputPath}.webp`);
 }
 
 module.exports = {
