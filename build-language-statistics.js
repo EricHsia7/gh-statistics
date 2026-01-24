@@ -80,7 +80,7 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
   for (const scale of [3, 6, 12, 15]) {
     const fileName = `language_statistics:${tag}@${scale}x`;
     const outputFilePath = `${imagesDir}${fileName}`;
-    await rasterize(svgText, outputFilePath, width * scale, height * scale, 2);
+    await rasterize(svgText, outputFilePath, width * scale, height * scale, 1);
   }
 }
 
