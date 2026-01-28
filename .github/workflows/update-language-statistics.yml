@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 24
 
-      - name: Get current date
+      - name: Get year month
         id: get-year-month
         run: |
           echo "year_month=$(date +'%Y-%m')" >> "$GITHUB_OUTPUT"
