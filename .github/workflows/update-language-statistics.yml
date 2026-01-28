@@ -17,9 +17,9 @@ jobs:
           node-version: 24
 
       - name: Get current date
-        id: get-current-date
+        id: get-year-month
         run: |
-          echo "today=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+          echo "year_month=$(date +'%Y-%m')" >> "$GITHUB_OUTPUT"
 
       - name: Restore cached dependencies
         id: restore-cached-dependencies
@@ -51,9 +51,9 @@ jobs:
         with:
           path: |
             ./repositories-list
-          key: repositories-list-${{ steps.get-current-date.outputs.today }}
+          key: repositories-list-${{ steps.get-year-month.outputs.year_month }}
           restore-keys: |
-            repositories-list-${{ steps.get-current-date.outputs.today }}
+            repositories-list-${{ steps.get-year-month.outputs.year_month }}
             repositories-list-
 
       - name: List repositories
