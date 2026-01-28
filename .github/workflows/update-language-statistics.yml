@@ -38,14 +38,12 @@ jobs:
       - name: Cache dependencies
         id: cache-dependencies
         uses: actions/cache/save@v5
+        if: steps.restore-cached-dependencies.outputs.cache-hit != 'true'
         with:
           path: |
             ./node_modules
             package-lock.json
           key: ${{ steps.restore-cached-dependencies.outputs.cache-primary-key }}
-
-      - name: Install dependencies
-        run: npm install
 
       - name: Restore cached repositories list
         id: restore-cached-repositories-list
@@ -68,6 +66,7 @@ jobs:
       - name: Cache repositories list
         id: cache-repositories-list
         uses: actions/cache/save@v5
+        if: steps.restore-cached-repositories-list.outputs.cache-hit != 'true'
         with:
           path: |
             ./repositories-list

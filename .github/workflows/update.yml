@@ -38,6 +38,7 @@ jobs:
       - name: Cache dependencies
         id: cache-dependencies
         uses: actions/cache/save@v5
+        if: steps.restore-cached-dependencies.outputs.cache-hit != 'true'
         with:
           path: |
             ./node_modules
@@ -70,6 +71,7 @@ jobs:
       - name: Cache Chrome
         id: cache-chrome
         uses: actions/cache/save@v5
+        if: steps.restore-cached-chrome.outputs.cache-hit != 'true'
         with:
           path: |
             ~/.cache/puppeteer
@@ -103,6 +105,7 @@ jobs:
       - name: Cache colors.json
         id: cache-colors-json
         uses: actions/cache/save@v5
+        if: steps.restore-cached-colors-json.outputs.cache-hit != 'true'
         with:
           path: |
             ./colors.json
