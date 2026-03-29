@@ -33,6 +33,7 @@ jobs:
             dependencies-${{ runner.os }}-${{ hashFiles('package.json') }}
 
       - name: Install dependencies
+        if: steps.restore-cached-dependencies.outputs.cache-hit != 'true'
         run: npm install
 
       - name: Cache dependencies
@@ -44,9 +45,6 @@ jobs:
             ./node_modules
             package-lock.json
           key: ${{ steps.restore-cached-dependencies.outputs.cache-primary-key }}
-
-      - name: Install dependencies
-        run: npm install
 
       - name: Get latest Chrome version
         id: chrome-version
