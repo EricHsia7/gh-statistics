@@ -77,6 +77,37 @@ jobs:
             ~/.cache/puppeteer
           key: ${{ steps.restore-cached-chrome.outputs.cache-primary-key }}
 
+      - name: Restore cached fonts
+        id: restore-cached-fonts
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ./fonts
+          key: fonts-v1
+          restore-keys: |
+            fonts-v1
+
+      - name: Get fonts
+        if: steps.restore-cached-fonts.outputs.cache-hit != 'true'
+        run: |
+          mkdir fonts
+          curl -C - "https://github.com/notofonts/notofonts.github.io/raw/refs/heads/main/fonts/NotoSans/full/variable-ttf/NotoSans-Italic[wdth,wght].ttf" -o "./fonts/NotoSans-Italic.ttf"
+          curl -C - "https://github.com/notofonts/notofonts.github.io/raw/refs/heads/main/fonts/NotoSans/full/variable-ttf/NotoSans[wdth,wght].ttf" -o "./fonts/NotoSans.ttf"
+
+      - name: Cache fonts
+        id: cache-fonts
+        uses: actions/cache/save@v5
+        if: steps.restore-cached-fonts.outputs.cache-hit != 'true'
+        with:
+          path: |
+            ./fonts
+          key: ${{ steps.restore-cached-fonts.outputs.cache-primary-key }}
+
+      - name: Install fonts
+        run: |
+          mv ./fonts/NotoSans-Italic.ttf ~/.local/share/fonts/NotoSans-Italic.ttf
+          mv ./fonts/NotoSans.ttf ~/.local/share/fonts/NotoSans.ttf
+
       - name: Update graph
         run: node update-graph.js
         env:
