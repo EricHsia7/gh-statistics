@@ -101,12 +101,6 @@ jobs:
             ./fonts
           key: ${{ steps.restore-cached-fonts.outputs.cache-primary-key }}
 
-      - name: Install fonts
-        run: |
-          mkdir ~/.local/share/fonts -p
-          mv ./fonts/NotoSans-Italic.ttf ~/.local/share/fonts/NotoSans-Italic.ttf
-          mv ./fonts/NotoSans.ttf ~/.local/share/fonts/NotoSans.ttf
-
       - name: Update graph
         run: node update-graph.js
         env:
