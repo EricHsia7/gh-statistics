@@ -103,6 +103,7 @@ jobs:
 
       - name: Install fonts
         run: |
+          mkdir ~/.local/share/fonts
           mv ./fonts/NotoSans-Italic.ttf ~/.local/share/fonts/NotoSans-Italic.ttf
           mv ./fonts/NotoSans.ttf ~/.local/share/fonts/NotoSans.ttf
 
