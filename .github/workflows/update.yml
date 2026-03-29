@@ -81,16 +81,17 @@ jobs:
         with:
           path: |
             ./fonts
-          key: fonts-v2
+          key: fonts-v3
           restore-keys: |
-            fonts-v2
+            fonts-v3
 
       - name: Get fonts
         if: steps.restore-cached-fonts.outputs.cache-hit != 'true'
         run: |
           mkdir fonts
           curl -C - "https://github.com/notofonts/notofonts.github.io/raw/refs/heads/main/fonts/NotoSans/full/ttf/NotoSans-Regular.ttf" -o "./fonts/NotoSans-Regular.ttf"
-
+          curl -C - "https://github.com/notofonts/notofonts.github.io/raw/refs/heads/main/fonts/NotoSans/full/ttf/NotoSans-Bold.ttf" -o "./fonts/NotoSans-Bold.ttf"
+          
       - name: Cache fonts
         id: cache-fonts
         uses: actions/cache/save@v5
@@ -99,6 +100,13 @@ jobs:
           path: |
             ./fonts
           key: ${{ steps.restore-cached-fonts.outputs.cache-primary-key }}
+
+      - name: Install fonts
+        run: |
+          mkdir -p ~/.local/share/fonts
+          mv ./fonts/NotoSans-Regular.ttf ~/.local/share/fonts/NotoSans-Regular.ttf
+          mv ./fonts/NotoSans-Bold.ttf ~/.local/share/fonts/NotoSans-Bold.ttf
+          fc-cache -f -v
 
       - name: Update graph
         run: node update-graph.js
