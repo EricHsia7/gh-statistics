@@ -91,8 +91,8 @@ jobs:
         if: steps.restore-cached-fonts.outputs.cache-hit != 'true'
         run: |
           mkdir fonts
-          curl -C - "https://github.com/notofonts/notofonts.github.io/raw/refs/heads/main/fonts/NotoSans/full/variable-ttf/NotoSans-Italic[wdth,wght].ttf" -o "./fonts/NotoSans-Italic.ttf"
-          curl -C - "https://github.com/notofonts/notofonts.github.io/raw/refs/heads/main/fonts/NotoSans/full/variable-ttf/NotoSans[wdth,wght].ttf" -o "./fonts/NotoSans.ttf"
+          curl -C - "https://github.com/notofonts/notofonts.github.io/raw/refs/heads/main/fonts/NotoSans/full/variable-ttf/NotoSans-Italic\\[wdth,wght\\].ttf" -o "./fonts/NotoSans-Italic.ttf"
+          curl -C - "https://github.com/notofonts/notofonts.github.io/raw/refs/heads/main/fonts/NotoSans/full/variable-ttf/NotoSans\\[wdth,wght\\].ttf" -o "./fonts/NotoSans.ttf"
 
       - name: Cache fonts
         id: cache-fonts
