@@ -43,7 +43,7 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
   const barGap = 8;
   // In horizontal, the thickness of the bar is the 'height' of the rect
   const barThickness = rowHeight - barGap;
-  const fontFamily = "'Noto Sans', sans-serif";
+  const fontFamily = "'Noto Sans Regular'";
 
   let svgContent = '';
 

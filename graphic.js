@@ -181,9 +181,8 @@ async function rasterize(svgText, outputPath, width, height, scale) {
       value: width * scale
     },
     font: {
-      loadSystemFonts: false,
-      fontFiles: ['./fonts/NotoSans-Regular.ttf'],
-      defaultFontFamily: "'Noto Sans'"
+      loadSystemFonts: true,
+      fontFiles: ['./fonts/NotoSans-Regular.ttf']
     }
   };
   const resvg = new Resvg(svg, options);
