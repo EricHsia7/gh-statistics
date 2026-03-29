@@ -130,6 +130,7 @@ jobs:
             colors-json-${{ steps.get-year-month.outputs.year_month }}
           
       - name: Fetch colors.json
+        if: steps.restore-cached-colors-json.outputs.cache-hit != 'true'
         run: curl -C - "https://raw.githubusercontent.com/ozh/github-colors/master/colors.json" -o "./colors.json"
 
       - name: Cache colors.json
