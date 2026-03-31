@@ -68,12 +68,12 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
 
     // Add Label Text (The Driver Name) - Aligned to the LEFT of the bar
     // text-anchor="end" makes the text end at the x coordinate
-    svgContent += `<text x="${x - 10}" y="${y + barThickness / 2 + 5}" text-anchor="end" fill="${categoryTextColor}" font-size="12" font-family="${fontFamily}" font-weight="600">${name}</text>`;
+    svgContent += `<text x="${x - 10}" y="${y + barThickness / 2 + 3.8}" text-anchor="end" fill="${categoryTextColor}" font-size="12" font-family="${fontFamily}" font-weight="600">${name}</text>`;
 
     // Add Percentage Text (The Score) - Aligned to the RIGHT of the bar
     const percent = (probability * 100).toFixed(1) + '%';
     // Position it slightly after the end of the bar
-    svgContent += `<text x="${x + barLength + 8}" y="${y + barThickness / 2 + 5}" text-anchor="start" fill="${valueTextColor}" font-size="12" font-family="${fontFamily}" font-weight="400">${percent}</text>`;
+    svgContent += `<text x="${x + barLength + 8}" y="${y + barThickness / 2 + 3.8}" text-anchor="start" fill="${valueTextColor}" font-size="12" font-family="${fontFamily}" font-weight="400">${percent}</text>`;
   });
 
   const svgText = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${svgContent}</svg>`;
