@@ -79,6 +79,7 @@ jobs:
         run: |
           mkdir -p ~/.local/share/fonts
           mv ./fonts/NotoSans-VariableFont.ttf ~/.local/share/fonts/NotoSans-VariableFont.ttf
+          mv ./fonts/NotoSansTC-VariableFont.ttf ~/.local/share/fonts/NotoSansTC-VariableFont.ttf
           fc-cache -f -v
 
       - name: Update graph
