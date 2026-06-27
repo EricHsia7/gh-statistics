@@ -64,7 +64,7 @@ jobs:
             puppeteer-chrome-${{ runner.os }}-
 
       - name: Install Chrome
-        run: npx puppeteer browsers install chrome[latest]
+        run: npx puppeteer browsers install chrome@latest
 
       - name: Cache Chrome
         id: cache-chrome
