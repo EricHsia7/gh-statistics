@@ -179,6 +179,8 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
   // Max probability for scaling (so top item fills the width)
   const maxProb = list[0][1];
 
+  const [x1, y1, x2, y2] = computePositions(30);
+
   list.forEach((item, index) => {
     const [name, probability, color] = item;
 
@@ -199,7 +201,6 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
     const colorStop1 = OKLCHToRGB(...color1).map((e) => Math.round(e * 255).toString());
     const colorStop2 = OKLCHToRGB(...color2).map((e) => Math.round(e * 255).toString());
 
-    const [x1, y1, x2, y2] = computePositions(30);
     definitions.push(`<linearGradient id="${linearGradientID}" x1="${x1 * 100}%" y1="${y1 * 100}%" x2="${x2 * 100}%" y2="${y2 * 100}%"><stop offset="0%" stop-color="rgb(${colorStop1.join(',')})"/><stop offset="100%" stop-color="rgb(${colorStop2.join(',')})"/></linearGradient>`);
     elements.push(`<rect x="${x}" y="${y}" width="${barLength}" height="${barThickness}" fill="url(#${linearGradientID})" rx="${barThickness / 2}" />`);
 
