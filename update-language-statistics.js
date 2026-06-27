@@ -1,7 +1,7 @@
 const { writeTextFile, readFile, makeDirectory } = require('./files.js');
 const { makeRequestToGitHubAPI } = require('./github-api.js');
+const { sha256 } = require('./hash.js');
 const cachedRepositoriesList = require('./repositories-list/index.json');
-const sha256 = require('sha256');
 
 const GITHUB_USERNAME = process.env.GITHUB_ACTOR;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
