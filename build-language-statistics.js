@@ -119,13 +119,16 @@ function shimmerPair(accent, { sheen = 0.08, shift = 12, vivid = 0.08, C0 = 0.12
 }
 
 function computePositions(deg) {
-  const angle = (deg / 180) * Math.PI;
+  const rad = (deg * Math.PI) / 180;
 
-  const x1 = (1 / 4) * Math.sin(2 * angle) * (Math.tan(angle) - 1);
-  const y1 = (1 / 4) * Math.sin(2 * angle) * (1 / Math.tan(angle) + 1);
+  const dx = Math.sin(rad);
+  const dy = -Math.cos(rad);
+  const len = Math.abs(dx) + Math.abs(dy); // projection onto unit square
 
-  const x2 = 1 - x1;
-  const y2 = 1 - y1;
+  const x1 = 0.5 - (dx * len) / 2;
+  const y1 = 0.5 - (dy * len) / 2;
+  const x2 = 0.5 + (dx * len) / 2;
+  const y2 = 0.5 + (dy * len) / 2;
 
   return [x1, y1, x2, y2];
 }
