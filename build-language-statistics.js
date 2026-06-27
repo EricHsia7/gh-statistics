@@ -182,7 +182,7 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
   // Max probability for scaling (so top item fills the width)
   const maxProb = list[0][1];
 
-  const [x1, y1, x2, y2] = computePositions(30);
+  const [x1, y1, x2, y2] = computePositions(120);
 
   list.forEach((item, index) => {
     const [name, probability, color] = item;
