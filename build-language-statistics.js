@@ -187,7 +187,7 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
     const colorStop1 = OKLCHToRGB(...color1);
     const colorStop2 = OKLCHToRGB(...color2);
 
-    definitions.push(`<linearGradient id="${linearGradientID}" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="rgb(${colorStop1.join(',')})"/><stop offset="100%" stop-color="rgb(${colorStop2.join(',')})"/></linearGradient>`);
+    definitions.push(`<linearGradient id="${linearGradientID}" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="rgb(${colorStop1.map((e) => Math.floor(e * 255)).join(',')})"/><stop offset="100%" stop-color="rgb(${colorStop2.map((e) => Math.floor(e * 255)).join(',')})"/></linearGradient>`);
     elements.push(`<rect x="${x}" y="${y}" width="${barLength}" height="${barThickness}" fill="url(#${linearGradientID})" rx="${barThickness / 2}" />`);
 
     // Add Label Text (The Driver Name) - Aligned to the LEFT of the bar
