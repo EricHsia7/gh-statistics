@@ -183,7 +183,7 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
     // Create Rectangle (The Race Car/Bar)
     const linearGradientID = `linear-gradient-${sha256(name)}`;
     const [r, g, b, a] = hexToRGBA(color);
-    const [color1, color2] = shimmerPair(...rgbToOKLCH(r, g, b));
+    const [color1, color2] = shimmerPair(rgbToOKLCH(r, g, b));
     const colorStop1 = OKLCHToRGB(...color1);
     const colorStop2 = OKLCHToRGB(...color2);
 
