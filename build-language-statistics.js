@@ -122,10 +122,10 @@ function computePositions(deg) {
   const angle = (deg / 180) * Math.PI;
 
   const x1 = (1 / 4) * Math.sin(2 * angle) * (Math.tan(angle) - 1);
-  const y1 = (1 / 4) * Math.sin(2 * angle) * (1 + 1 / Math.tan(angle));
+  const y1 = (1 / 4) * Math.sin(2 * angle) * (1 / Math.tan(angle) + 1);
 
-  const x2 = 1 - (1 / 4) * Math.sin(2 * angle) * (Math.tan(angle) - 1);
-  const y2 = 1 - (1 / 4) * Math.sin(2 * angle) * (1 / Math.tan(angle) + 1);
+  const x2 = 1 - x1;
+  const y2 = 1 - y1;
 
   return [x1, y1, x2, y2];
 }
