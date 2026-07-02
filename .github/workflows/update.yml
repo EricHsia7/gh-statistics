@@ -48,9 +48,9 @@ jobs:
 
       - name: Get latest Chrome version
         id: chrome-version
-        run: |
-          VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        run: echo "version=150.0.7871.24" >> $GITHUB_OUTPUT
+          # VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE)
+          # echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Restore cached Chrome
         id: restore-cached-chrome
@@ -64,7 +64,8 @@ jobs:
             puppeteer-chrome-${{ runner.os }}-
 
       - name: Install Chrome
-        run: npx puppeteer browsers install chrome@stable
+        run: npx puppeteer browsers install chrome@150.0.7871.24
+          # npx puppeteer browsers install chrome@stable
 
       - name: Cache Chrome
         id: cache-chrome
