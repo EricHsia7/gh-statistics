@@ -76,7 +76,6 @@ function rgbToOKLCH(r, g, b) {
 }
 
 function OKLCHToRGB(l, c, h) {
-  // OKLCH -> linear sRGB (your matrices)
   function oklchToLinearRGB(l, c, h) {
     const rad = h * (Math.PI / 180);
     const A = c * Math.cos(rad);
@@ -90,7 +89,6 @@ function OKLCHToRGB(l, c, h) {
     return [4.076741661347994 * L - 3.307711590408194 * M + 0.230969928729428 * S, -1.268438004092176 * L + 2.609757400663372 * M - 0.34131939631022 * S, -0.004196086541837 * L - 0.703418614459449 * M + 1.707614700930945 * S];
   }
 
-  // linear sRGB -> OKLab (for perceptual distance)
   function linearRGBToOKLab([r, g, b]) {
     const l_ = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
     const m_ = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
