@@ -221,7 +221,7 @@ function stringifyRGB(r, g, b) {
   return `rgb(${Math.round(r * 255)},${Math.round(g * 255)},${Math.round(b * 255)})`;
 }
 
-function shimmerPair(accent, { sheen = 0.08, shift = 12, vivid = 0.08, C0 = 0.12, specular = 0.15 } = {}) {
+function shimmerPair(accent, { sheen = 0.08, shift = 6, vivid = 0.08, C0 = 0.12, specular = 0.15 } = {}) {
   const [l, c, h] = accent;
   const k = Math.min(1, c / C0);
   const dh = shift * k;
