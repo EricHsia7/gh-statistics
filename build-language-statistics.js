@@ -76,35 +76,81 @@ function rgbToOKLCH(r, g, b) {
 }
 
 function OKLCHToRGB(l, c, h) {
-  function applyGammaTransformation(x) {
-    if (x <= 0.00313080495356) {
-      return x * 12.92;
-    } else {
-      return Math.exp(Math.log(x) / 2.4) * 1.055 - 0.055;
-    }
+  // OKLCH -> linear sRGB (your matrices)
+  function oklchToLinearRGB(l, c, h) {
+    const rad = h * (Math.PI / 180);
+    const A = c * Math.cos(rad);
+    const B = c * Math.sin(rad);
+    const L1 = 0.99999999845052 * l + 0.396337792173768 * A + 0.215803758060759 * B;
+    const M1 = 1.000000008881761 * l - 0.105561342323656 * A - 0.063854174771706 * B;
+    const S1 = 1.000000054672411 * l - 0.089484182094966 * A - 1.291485537864092 * B;
+    const L = L1 ** 3,
+      M = M1 ** 3,
+      S = S1 ** 3;
+    return [4.076741661347994 * L - 3.307711590408194 * M + 0.230969928729428 * S, -1.268438004092176 * L + 2.609757400663372 * M - 0.34131939631022 * S, -0.004196086541837 * L - 0.703418614459449 * M + 1.707614700930945 * S];
   }
 
-  const H = h * (Math.PI / 180);
-  const A = c * Math.cos(H);
-  const B = c * Math.sin(H);
+  // linear sRGB -> OKLab (for perceptual distance)
+  function linearRGBToOKLab([r, g, b]) {
+    const l_ = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+    const m_ = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+    const s_ = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+    return [0.2104542553 * l_ + 0.793617785 * m_ - 0.0040720468 * s_, 1.9779984951 * l_ - 2.428592205 * m_ + 0.4505937099 * s_, 0.0259040371 * l_ + 0.7827717662 * m_ - 0.808675766 * s_];
+  }
 
-  const L1 = 0.99999999845052 * l + 0.396337792173768 * A + 0.215803758060759 * B;
-  const M1 = 1.000000008881761 * l - 0.105561342323656 * A - 0.063854174771706 * B;
-  const S1 = 1.000000054672411 * l - 0.089484182094966 * A - 1.291485537864092 * B;
+  const gamma = (x) => (x <= 0.00313080495356 ? x * 12.92 : Math.exp(Math.log(x) / 2.4) * 1.055 - 0.055);
+  const clamp01 = (x) => Math.min(1, Math.max(0, x));
+  const inGamut = ([r, g, b]) => {
+    const e = 1e-4;
+    return r >= -e && r <= 1 + e && g >= -e && g <= 1 + e && b >= -e && b <= 1 + e;
+  };
+  const clipLinear = (rgb) => rgb.map(clamp01);
+  const deltaEOK = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  const toOutput = (lin) => lin.map((x) => clamp01(gamma(clamp01(x))));
 
-  const L = Math.pow(L1, 3);
-  const M = Math.pow(M1, 3);
-  const S = Math.pow(S1, 3);
+  // Achromatic extremes
+  if (l >= 1) return [1, 1, 1];
+  if (l <= 0) return [0, 0, 0];
 
-  const linearlizedR = 4.076741661347994 * L - 3.307711590408194 * M + 0.230969928729428 * S;
-  const linearlizedG = -1.268438004092176 * L + 2.609757400663372 * M - 0.34131939631022 * S;
-  const linearlizedB = -0.004196086541837 * L - 0.703418614459449 * M + 1.707614700930945 * S;
+  // Already displayable
+  let rgb = oklchToLinearRGB(l, c, h);
+  if (inGamut(rgb)) return toOutput(rgb);
 
-  const r = applyGammaTransformation(linearlizedR);
-  const g = applyGammaTransformation(linearlizedG);
-  const b = applyGammaTransformation(linearlizedB);
+  const JND = 0.02; // just-noticeable difference in OKLab
+  const EPS = 1e-4;
+  const rad = h * (Math.PI / 180);
+  const labOf = (chroma) => [l, chroma * Math.cos(rad), chroma * Math.sin(rad)];
 
-  return [r, g, b];
+  // If clipping the full-chroma color is already imperceptible, just clip
+  let clipped = clipLinear(oklchToLinearRGB(l, c, h));
+  if (deltaEOK(linearRGBToOKLab(clipped), labOf(c)) < JND) {
+    return toOutput(clipped);
+  }
+
+  // Otherwise binary-search chroma, clipping + ΔE-checking each step
+  let min = 0,
+    max = c,
+    minInGamut = true;
+  while (max - min > EPS) {
+    const chroma = (min + max) / 2;
+    const current = oklchToLinearRGB(l, chroma, h);
+
+    if (minInGamut && inGamut(current)) {
+      min = chroma;
+      continue;
+    }
+
+    clipped = clipLinear(current);
+    const E = deltaEOK(linearRGBToOKLab(clipped), labOf(chroma));
+    if (E < JND) {
+      if (JND - E < EPS) return toOutput(clipped);
+      minInGamut = false;
+      min = chroma;
+    } else {
+      max = chroma;
+    }
+  }
+  return toOutput(clipped);
 }
 
 function hslToRGB(h, s, l) {
@@ -131,24 +177,29 @@ function rgbToHsl(r, g, b) {
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   const delta = max - min;
-  const lightness = (max + min) / 2;
-  const saturation = lightness >= 0.5 ? delta / (2 - (max + min)) : delta / (1 - Math.abs(2 * lightness - 1));
-  let hue = 0;
-  switch (max) {
-    case r:
-      hue = 60 * (((g - b) / delta) % 6);
-      break;
-    case g:
-      hue = 60 * ((b - r) / delta + 2);
-      break;
-    case b:
-      hue = 60 * ((b - r) / delta + 4);
-      break;
-    default:
-      break;
+
+  let l = (max + min) / 2;
+  let h = 0;
+  let s = 0;
+
+  if (delta !== 0) {
+    s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / delta + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / delta + 2;
+        break;
+      case b:
+        h = (r - g) / delta + 4;
+        break;
+    }
+
+    h *= 60;
   }
 
-  return [(hue + 360) % 360, saturation, lightness];
+  return [h, s, l];
 }
 
 function interpolateInHSL(rgb1, rgb2, dt = 0.01) {
@@ -269,7 +320,11 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
     const colorStop1 = OKLCHToRGB(...color1);
     const colorStop2 = OKLCHToRGB(...color2);
 
-    definitions.push(`<linearGradient id="${linearGradientID}" x1="${x1 * 100}%" y1="${y1 * 100}%" x2="${x2 * 100}%" y2="${y2 * 100}%">${interpolateInHSL(colorStop1, colorStop2, 0.01).map((stop) => `<stop offset="${(Math.round(stop[0] * 1e3) / 1e3) * 100}%" stop-color="${stringifyRGB(stop[1][0], stop[1][1], stop[1][2])}"/>`).join('')}</linearGradient>`);
+    definitions.push(
+      `<linearGradient id="${linearGradientID}" x1="${x1 * 100}%" y1="${y1 * 100}%" x2="${x2 * 100}%" y2="${y2 * 100}%">${interpolateInHSL(colorStop1, colorStop2, 0.01)
+        .map((stop) => `<stop offset="${(Math.round(stop[0] * 1e3) / 1e3) * 100}%" stop-color="${stringifyRGB(stop[1][0], stop[1][1], stop[1][2])}"/>`)
+        .join('')}</linearGradient>`
+    );
     elements.push(`<rect x="${x}" y="${y}" width="${barLength}" height="${barThickness}" fill="url(#${linearGradientID})" rx="${barThickness / 2}" />`);
 
     // Add Label Text (The Driver Name) - Aligned to the LEFT of the bar
