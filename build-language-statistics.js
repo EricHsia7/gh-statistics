@@ -107,6 +107,71 @@ function OKLCHToRGB(l, c, h) {
   return [r, g, b];
 }
 
+function hslToRGB(h, s, l) {
+  const i = h / 60;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs((i % 2) - 1));
+  const m = l - c / 2;
+
+  const pattern = [
+    [c, x, 0],
+    [x, c, 0],
+    [0, c, x],
+    [0, x, c],
+    [x, 0, c],
+    [c, 0, x]
+  ][Math.floor(i) % 6];
+
+  const [R, G, B] = pattern;
+
+  return [R + m, G + m, B + m];
+}
+
+function rgbToHsl(r, g, b) {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+  const lightness = (max + min) / 2;
+  const saturation = lightness >= 0.5 ? delta / (2 - (max + min)) : delta / (1 - Math.abs(2 * lightness - 1));
+  let hue = 0;
+  switch (max) {
+    case r:
+      hue = 60 * (((g - b) / delta) % 6);
+      break;
+    case g:
+      hue = 60 * ((b - r) / delta + 2);
+      break;
+    case b:
+      hue = 60 * ((b - r) / delta + 4);
+      break;
+    default:
+      break;
+  }
+
+  return [(hue + 360) % 360, saturation, lightness];
+}
+
+function interpolateInHSL(rgb1, rgb2, dt = 0.01) {
+  const [h1, s1, l1] = rgbToHsl(rgb1[0], rgb1[1], rgb1[2]);
+  const [h2, s2, l2] = rgbToHsl(rgb2[0], rgb2[1], rgb2[2]);
+  const stops = [];
+
+  let dH = h2 - h1;
+  if (dH > 180) dH = 360 - dH;
+  if (dH < -180) dH += 360;
+  const dh = dH * dt;
+  const ds = (s2 - s1) * dt;
+  const dl = (l2 - l1) * dt;
+  for (let t = 0, h = h1, s = s1, l = l1; t < 1; t += dt, h += dh, s += ds, l += dl) {
+    stops.push([t, hslToRGB(h, s, l)]);
+  }
+  return stops;
+}
+
+function stringifyRGB(r, g, b) {
+  return `rgb(${Math.round(r * 255)},${Math.round(g * 255)},${Math.round(b * 255)})`;
+}
+
 function shimmerPair(accent, { sheen = 0.08, shift = 12, vivid = 0.08, C0 = 0.12, specular = 0.15 } = {}) {
   const [l, c, h] = accent;
   const k = Math.min(1, c / C0);
@@ -201,10 +266,10 @@ async function renderChart(languages, colors, categoryTextColor = '#555', valueT
     const linearGradientID = `linear-gradient-${sha256(name)}`;
     const [r, g, b, a] = hexToRGBA(color);
     const [color1, color2] = shimmerPair(rgbToOKLCH(r, g, b));
-    const colorStop1 = OKLCHToRGB(...color1).map((e) => Math.round(e * 255).toString());
-    const colorStop2 = OKLCHToRGB(...color2).map((e) => Math.round(e * 255).toString());
+    const colorStop1 = OKLCHToRGB(...color1);
+    const colorStop2 = OKLCHToRGB(...color2);
 
-    definitions.push(`<linearGradient id="${linearGradientID}" x1="${x1 * 100}%" y1="${y1 * 100}%" x2="${x2 * 100}%" y2="${y2 * 100}%"><stop offset="0%" stop-color="rgb(${colorStop1.join(',')})"/><stop offset="100%" stop-color="rgb(${colorStop2.join(',')})"/></linearGradient>`);
+    definitions.push(`<linearGradient id="${linearGradientID}" x1="${x1 * 100}%" y1="${y1 * 100}%" x2="${x2 * 100}%" y2="${y2 * 100}%">${interpolateInHSL(colorStop1, colorStop2, 0.01).map((stop) => `<stop offset="${(Math.round(stop[0] * 1e3) / 1e3) * 100}%" stop-color="${stringifyRGB(stop[1][0], stop[1][1], stop[1][2])}"/>`).join('')}</linearGradient>`);
     elements.push(`<rect x="${x}" y="${y}" width="${barLength}" height="${barThickness}" fill="url(#${linearGradientID})" rx="${barThickness / 2}" />`);
 
     // Add Label Text (The Driver Name) - Aligned to the LEFT of the bar
