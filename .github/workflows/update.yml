@@ -61,7 +61,7 @@ jobs:
           key: puppeteer-chrome-${{ runner.os }}-${{ steps.chrome-version.outputs.version }}
           restore-keys: |
             puppeteer-chrome-${{ runner.os }}-${{ steps.chrome-version.outputs.version }}
-            puppeteer-chrome-${{ runner.os }}-
+          # puppeteer-chrome-${{ runner.os }}-
 
       - name: Install Chrome
         run: npx puppeteer browsers install chrome@152.0.7977.54
