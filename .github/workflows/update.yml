@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
@@ -23,7 +23,7 @@ jobs:
 
       - name: Restore cached dependencies
         id: restore-cached-dependencies
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ./node_modules
@@ -38,7 +38,7 @@ jobs:
 
       - name: Cache dependencies
         id: cache-dependencies
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: steps.restore-cached-dependencies.outputs.cache-hit != 'true'
         with:
           path: |
@@ -48,13 +48,13 @@ jobs:
 
       - name: Get latest Chrome version
         id: chrome-version
-        run: echo "version=150.0.7871.24" >> $GITHUB_OUTPUT
+        run: echo "version=152.0.7977.54" >> $GITHUB_OUTPUT
           # VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE)
           # echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Restore cached Chrome
         id: restore-cached-chrome
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ~/.cache/puppeteer
@@ -64,12 +64,12 @@ jobs:
             puppeteer-chrome-${{ runner.os }}-
 
       - name: Install Chrome
-        run: npx puppeteer browsers install chrome@150.0.7871.24
+        run: npx puppeteer browsers install chrome@152.0.7977.54
           # npx puppeteer browsers install chrome@stable
 
       - name: Cache Chrome
         id: cache-chrome
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: steps.restore-cached-chrome.outputs.cache-hit != 'true'
         with:
           path: |
@@ -97,7 +97,7 @@ jobs:
       
       - name: Restore cached colors.json
         id: restore-cached-colors-json
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             ./colors.json
@@ -111,7 +111,7 @@ jobs:
 
       - name: Cache colors.json
         id: cache-colors-json
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: steps.restore-cached-colors-json.outputs.cache-hit != 'true'
         with:
           path: |
