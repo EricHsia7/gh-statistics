@@ -1,15 +1,13 @@
 {
   "languages": {
-    "Less": 657540,
+    "Less": 622764,
     "CartoCSS": 368402,
-    "JavaScript": 231815,
-    "YAML": 97448,
+    "JavaScript": 302389,
+    "YAML": 97490,
     "Python": 62788,
     "Shell": 21167,
     "Lua": 19878,
-    "PLpgSQL": 4583,
-    "HTML": 1759,
     "Dockerfile": 1485
   },
-  "last_retrieval": 1787200355862
+  "last_retrieval": 1788000193674
 }
