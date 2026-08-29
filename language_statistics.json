@@ -1,8 +1,8 @@
 {
   "HTML": 5601360,
-  "TypeScript": 1959493,
-  "CSS": 553811,
-  "JavaScript": 1421690,
+  "TypeScript": 1993498,
+  "CSS": 553904,
+  "JavaScript": 1422607,
   "Python": 124190,
   "Less": 972290,
   "CartoCSS": 368402,
@@ -12,6 +12,7 @@
   "PLpgSQL": 4583,
   "Dockerfile": 1485,
   "PHP": 10609,
+  "GLSL": 4799,
   "C++": 1130583,
   "C": 702461,
   "MATLAB": 10591
