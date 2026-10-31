@@ -48,7 +48,7 @@ jobs:
 
       - name: Get latest Chrome version
         id: chrome-version
-        run: echo "version=152.0.7977.54" >> $GITHUB_OUTPUT
+        run: echo "version=156.0.8078.80" >> $GITHUB_OUTPUT
           # VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE)
           # echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -64,7 +64,7 @@ jobs:
           # puppeteer-chrome-${{ runner.os }}-
 
       - name: Install Chrome
-        run: npx puppeteer browsers install chrome@152.0.7977.54
+        run: npx puppeteer browsers install chrome@156.0.8078.80
           # npx puppeteer browsers install chrome@stable
 
       - name: Cache Chrome
